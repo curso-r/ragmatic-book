@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>R pragmático</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016.">
+  <meta name="generator" content="bookdown 0.1.3 and GitBook 2.6.7">
+
+  <meta property="og:title" content="R pragmático" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016." />
+  <meta name="github-repo" content="curso-r/ragmatic-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="R pragmático" />
+  
+  <meta name="twitter:description" content="Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016." />
+  
+
+<meta name="author" content="Julio Trecenti">
+
+<meta name="date" content="2016-10-04">
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="setup.html">
+<link rel="next" href="set-up.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Pragmático</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>1</b> Setup</a><ul>
+<li class="chapter" data-level="1.1" data-path="setup.html"><a href="setup.html#diferencas-entre-cc-e-r"><i class="fa fa-check"></i><b>1.1</b> Diferenças entre C/C++ e R</a></li>
+<li class="chapter" data-level="1.2" data-path="setup.html"><a href="setup.html#pacotes"><i class="fa fa-check"></i><b>1.2</b> Pacotes</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="principios.html"><a href="principios.html"><i class="fa fa-check"></i><b>2</b> Princípios</a><ul>
+<li class="chapter" data-level="2.1" data-path="principios.html"><a href="principios.html#o-tidyverse"><i class="fa fa-check"></i><b>2.1</b> O tidyverse</a></li>
+<li class="chapter" data-level="2.2" data-path="principios.html"><a href="principios.html#rstudio"><i class="fa fa-check"></i><b>2.2</b> RStudio</a></li>
+<li class="chapter" data-level="2.3" data-path="principios.html"><a href="principios.html#rmarkdown"><i class="fa fa-check"></i><b>2.3</b> RMarkdown</a></li>
+<li class="chapter" data-level="2.4" data-path="principios.html"><a href="principios.html#github"><i class="fa fa-check"></i><b>2.4</b> GitHub</a></li>
+<li class="chapter" data-level="2.5" data-path="principios.html"><a href="principios.html#pipe"><i class="fa fa-check"></i><b>2.5</b> Pipe</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="set-up.html"><a href="set-up.html"><i class="fa fa-check"></i><b>3</b> Análise exploratória: inscritos no curso</a><ul>
+<li class="chapter" data-level="3.1" data-path="set-up.html"><a href="set-up.html#objetivos"><i class="fa fa-check"></i><b>3.1</b> Objetivos</a></li>
+<li class="chapter" data-level="3.2" data-path="set-up.html"><a href="set-up.html#base-de-dados"><i class="fa fa-check"></i><b>3.2</b> Base de dados</a></li>
+<li class="chapter" data-level="3.3" data-path="set-up.html"><a href="set-up.html#data-tidying"><i class="fa fa-check"></i><b>3.3</b> Data tidying</a></li>
+<li class="chapter" data-level="3.4" data-path="set-up.html"><a href="set-up.html#alguns-graficos"><i class="fa fa-check"></i><b>3.4</b> Alguns gráficos</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html"><i class="fa fa-check"></i><b>4</b> Trabalhando com vetores especiais</a><ul>
+<li class="chapter" data-level="4.1" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html#pacote-lubridate-para-trabalhar-com-datas"><i class="fa fa-check"></i><b>4.1</b> Pacote <code>lubridate</code> para trabalhar com datas</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html#exercicio"><i class="fa fa-check"></i><b>4.1.1</b> Exercício</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html#pacote-stringr-para-trabalhar-com-textos"><i class="fa fa-check"></i><b>4.2</b> Pacote <code>stringr</code> para trabalhar com textos</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html#expressoes-regulares"><i class="fa fa-check"></i><b>4.2.1</b> Expressões regulares</a></li>
+<li class="chapter" data-level="4.2.2" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html#funcoes-do-stringr"><i class="fa fa-check"></i><b>4.2.2</b> Funções do <code>stringr</code></a></li>
+<li class="chapter" data-level="4.2.3" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html#exemplo"><i class="fa fa-check"></i><b>4.2.3</b> Exemplo</a></li>
+<li class="chapter" data-level="4.2.4" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html#exercicios"><i class="fa fa-check"></i><b>4.2.4</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html#pacote-forcats-para-trabalhar-com-factors"><i class="fa fa-check"></i><b>4.3</b> Pacote <code>forcats</code> para trabalhar com factors</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html#exercicio-1"><i class="fa fa-check"></i><b>4.3.1</b> Exercício</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="visualizacao-de-dados.html"><a href="visualizacao-de-dados.html"><i class="fa fa-check"></i><b>5</b> Visualização de dados</a><ul>
+<li class="chapter" data-level="5.1" data-path="visualizacao-de-dados.html"><a href="visualizacao-de-dados.html#com-ggplot2"><i class="fa fa-check"></i><b>5.1</b> Com <code>ggplot2</code></a><ul>
+<li class="chapter" data-level="5.1.1" data-path="visualizacao-de-dados.html"><a href="visualizacao-de-dados.html#construindo-graficos"><i class="fa fa-check"></i><b>5.1.1</b> Construindo gráficos</a></li>
+<li class="chapter" data-level="5.1.2" data-path="visualizacao-de-dados.html"><a href="visualizacao-de-dados.html#as-camadas-de-um-grafico"><i class="fa fa-check"></i><b>5.1.2</b> As camadas de um gráfico</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html"><i class="fa fa-check"></i><b>6</b> Transformação de dados</a><ul>
+<li class="chapter" data-level="6.1" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#pacotes-dplyr-e-tidyr"><i class="fa fa-check"></i><b>6.1</b> Pacotes <code>dplyr</code> e <code>tidyr</code></a><ul>
+<li class="chapter" data-level="6.1.1" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#trabalhando-com-tibbles"><i class="fa fa-check"></i><b>6.1.1</b> Trabalhando com <code>tibble</code>s</a></li>
+<li class="chapter" data-level="6.1.2" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#as-cinco-funcoes-principais-do-dplyr"><i class="fa fa-check"></i><b>6.1.2</b> As cinco funções principais do <code>dplyr</code></a></li>
+<li class="chapter" data-level="6.1.3" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#caracteristicas"><i class="fa fa-check"></i><b>6.1.3</b> Características</a></li>
+<li class="chapter" data-level="6.1.4" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#vantagens"><i class="fa fa-check"></i><b>6.1.4</b> Vantagens</a></li>
+<li class="chapter" data-level="6.1.5" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#select"><i class="fa fa-check"></i><b>6.1.5</b> <code>select</code></a></li>
+<li class="chapter" data-level="6.1.6" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#filter"><i class="fa fa-check"></i><b>6.1.6</b> <code>filter</code></a></li>
+<li class="chapter" data-level="6.1.7" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#mutate"><i class="fa fa-check"></i><b>6.1.7</b> <code>mutate</code></a></li>
+<li class="chapter" data-level="6.1.8" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#arrange"><i class="fa fa-check"></i><b>6.1.8</b> <code>arrange</code></a></li>
+<li class="chapter" data-level="6.1.9" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#summarise"><i class="fa fa-check"></i><b>6.1.9</b> <code>summarise</code></a></li>
+<li class="chapter" data-level="6.1.10" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#gather"><i class="fa fa-check"></i><b>6.1.10</b> <code>gather</code></a></li>
+<li class="chapter" data-level="6.1.11" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#spread"><i class="fa fa-check"></i><b>6.1.11</b> <code>spread</code></a></li>
+<li class="chapter" data-level="6.1.12" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#funcoes-auxiliares"><i class="fa fa-check"></i><b>6.1.12</b> Funções auxiliares</a></li>
+<li class="chapter" data-level="6.1.13" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#um-pouco-mais-de-transformacao-de-dados"><i class="fa fa-check"></i><b>6.1.13</b> Um pouco mais de transformação de dados</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R pragmático</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="principios" class="section level1">
+<h1><span class="header-section-number">2. </span> Princípios</h1>
+<div id="o-tidyverse" class="section level2">
+<h2><span class="header-section-number">2.1</span> O tidyverse</h2>
+<p>O <code>tidyverse</code> é um pacote do R, cuja única função é carregar outros pacotes do R. O conjunto desses pacotes forma o <code>tidyverse</code>. É considerado um “universo” a parte do R pois todas suas ferramentas possuem formas de uso consistentes e funcionam muito bem em conjunto.</p>
+<p>Os princípios do <code>tidyverse</code> seguem abaixo.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Eficiência algorítmica vs eficiência de trabalho</strong>. Suposição: o tempo que o estatísco gasta pensando em como realizar uma operação é mais importante do que o tempo que o computador gasta para realizar um cálculo.</li>
+<li><strong>Tidy data</strong>. Princípio para arrumação de base de dados que resolve 90% dos problemas reais. O objetivo em <em>arrumação de dados</em> é extrair e transformar uma base de dados até que ela esteja em formato <em>tidy</em>. Essa é uma boa prática de análise de dados que economiza muito tempo em qualquer trabalho. Uma base de dados é considerada “tidy” se
+<ul>
+<li>Cada observação é uma linha do bd.</li>
+<li>Cada variável é uma coluna do bd.</li>
+<li>Cada dado está numa célula do bd.</li>
+</ul></li>
+<li><p><strong>Utilização do operador <code>%&gt;%</code> (pipe)</strong>.</p>
+<blockquote>
+<p>“No matter how complex and polished the individual operations are, it is often the quality of the glue that most directly determines the power of the system.”<br />
+– Hal Abelson</p>
+</blockquote></li>
+<li><strong>Aparato mnemônico</strong>. Pacotes baseados em teoria e API consistentes.</li>
+<li><strong>Minimalidade e funções puras</strong>. Funções sem <em>side-effects</em>. Interagem com o mundo através de inputs e outputs. Encaixa perfeitamente com o princípio do pipe</li>
+<li><p><em>workflow</em> para ciência de dados</p></li>
+</ol>
+<p><img src="http://r4ds.had.co.nz/diagrams/data-science.png" style="width: 500px;display: block;margin-left: auto;margin-right: auto "/></p>
+</div>
+<div id="rstudio" class="section level2">
+<h2><span class="header-section-number">2.2</span> RStudio</h2>
+<p>O RStudio é a melhor IDE para usar o R. O programa possui diversas vantagens e praticamente nenhuma desvantagem. Caso tenha interesse em se ambientar e entender as características do RStudio, veja <a href="https://csgillespie.github.io/efficientR/set-up.html#rstudio">essa página</a>.</p>
+<p>Uma importante funcionalidade do RStudio é a possibilidade de criar projetos. Uma estrutura recomendada para organização de pacotes segue abaixo.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">project/</span>
+  <span class="kw">-</span> README.Rmd   <span class="co"># Descrição do pacote</span>
+  <span class="kw">-</span> set-up.R     <span class="co"># Pacotes etc</span>
+  <span class="kw">-</span> R/           <span class="co"># Código R, organizado com 0-load.R, 1-tidy.R, 2-vis.R, ...</span>
+  <span class="kw">-</span> data/        <span class="co"># Dados (estruturados ou não)</span>
+  <span class="kw">-</span> figures/     <span class="co"># gráficos (pode ficar dentro de output/)</span>
+  <span class="kw">-</span> output/      <span class="co"># Relatórios em .Rmd, .tex etc</span>
+  <span class="kw">-</span> project.Rproj</code></pre></div>
+<p>Outra possível forma de estruturar um projeto é organizando-o como um pacote do R:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">project/</span>
+  <span class="kw">-</span> README.md    <span class="co"># Descrição do pacote</span>
+  <span class="kw">-</span> DESCRIPTION  <span class="co"># Metadados estruturados do pacote e dependências</span>
+  <span class="kw">-</span> NAMESPACE    <span class="co"># importações e exportações do pacote</span>
+  <span class="kw">-</span> vignettes/   <span class="co"># Relatórios em .Rmd</span>
+  <span class="kw">-</span> R/           <span class="co"># Funções do R</span>
+  <span class="kw">-</span> data/        <span class="co"># Dados estruturados (tidy data)</span>
+  <span class="kw">-</span> data-raw/    <span class="co"># Dados não estruturados e arqs 0-load.R, 1-tidy.R, 2-vis.R, ...</span>
+  <span class="kw">-</span> project.Rproj</code></pre></div>
+<p>Para detalhes de como criar pacotes no R de forma eficiente, leia o <a href="http://r-pkgs.had.co.nz">r-pkgs</a>. Recomendo a adoção de um critério consistente para organização de projetos. O estatístico não pode perder tempo com a estruturação das pastas, então é melhor forçar uma estrutura pré-fixada do que planejar a melhor forma de organização para cada projeto.</p>
+</div>
+<div id="rmarkdown" class="section level2">
+<h2><span class="header-section-number">2.3</span> RMarkdown</h2>
+<p>O RMarkdown é um tipo de documento especial que contém tanto textos (em markdown) quanto códigos em R (em chunks). O markdown nada mais é do que um documento de texto com alguns padrões básicos de formatação, como negrito, itálico, títulos, subtítulos, itemização e referências cruzadas. Já os chunks são pedaços de códigos em R encapsulados por três crases “```”. Os códigos são executados sempre que o documento é processado para algum formato específico.</p>
+<p>A utilização do RMarkdown para produção de relatórios é essencial para o estatístico pragmático. O RMarkdown possui diversas vantagens:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Simplicidade e foco</strong>. Obriga o usuário a focar na análise e não na formatação do documento.</li>
+<li><strong>Versátil</strong>. Pode ser utilizado para gerar documentos em LaTeX, Word, HTML e apresentações em beamer, pptx e HTML (de vários tipos). Pode ainda gerar sites, livros, dissertações de mestrado e até mesmo dashboards interativos.</li>
+<li><strong>Reprodutível</strong>. O RMarkdown nada mais é que um arquivo de texto. Além disso, ele tenta te obrigar a fazer o documento mais autocontido possível. Assim, um documento .Rmd é fácil de compartilhar e de ser utilizado pelo receptor. Lembre-se, o receptor pode ser o futuro você! Vale enfatizar que a reprodutibilidade é considerada como um dos princípios fundamentais para a ciência. Então só de usar RMarkdown, você já está colaborando com a ciência :)</li>
+<li><strong>Eficiente</strong>. É possível configurar e criar templates de análises para quaisquer tipos de aplicações e clientes.</li>
+</ol>
+<p>Para detalhes sobre como utilizar o RMarkdown, <a href="http://r4ds.had.co.nz/r-markdown.html">leia aqui</a> <a href="http://rmarkdown.rstudio.com/lesson-1.html">e aqui</a>.</p>
+</div>
+<div id="github" class="section level2">
+<h2><span class="header-section-number">2.4</span> GitHub</h2>
+<p>O GitHub é uma plataforma online para compartilhar códigos. Projetos do GitHub são baseados no <code>git</code>, uma ferramenta de versionamento de software.</p>
+<p>Utilizar o GitHub é uma boa prática de organizar projetos pois é uma forma de manter os códigos organizados e atualizados na web, sem o perigo de perder tudo acidentalmente. Esse site também é essencial para projetos colaborativos, pois aumenta a produtividade e permite que pessoas de todo lugar ajudem nos projetos. O <code>tidyverse</code> só é o que é hoje por conta do <em>social coding</em>.</p>
+<p>Para detalhes, faça o <a href="https://www.coursera.org/learn/data-scientists-tools">data science toolbox</a>.</p>
+</div>
+<div id="pipe" class="section level2">
+<h2><span class="header-section-number">2.5</span> Pipe</h2>
+<p>O operador <em>pipe</em> foi uma das grandes revoluções recentes do R, tornando a leitura de códigos mais lógica, fácil e compreensível. Este operador foi introduzido por Stefan Milton Bache no pacote <code>magrittr</code> e já existem diversos pacotes construidos para facilitar a sua utilização.</p>
+<p>Basicamente, o operador <code>%&gt;%</code> usa o resultado do seu lado esquerdo como primeiro argumento da função do lado direito. Só isso!</p>
+<p>Para usar o operador <code>%&gt;%</code>, primeiramente instale o pacote <code>magrittr</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;magrittr&quot;</span>)</code></pre></div>
+<p>e carregá-lo com a função <code>library()</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(magrittr)</code></pre></div>
+<p>Feito isso, vamos testar o operador calculando a raiz quadrada da soma de alguns números.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)
+x %&gt;%<span class="st"> </span>sum %&gt;%<span class="st"> </span>sqrt</code></pre></div>
+<pre><code>## [1] 3.162278</code></pre>
+<p>O caminho que o código acima seguiu foi enviar o objeto <code>x</code> como argumento da função <code>sum()</code> e, em seguida, enviar a saida da expressão <code>sum(x)</code> como argumento da função <code>sqrt()</code>. Observe que não é necessário colocar os parênteses após o nome das funções.</p>
+<p>Se escrevermos esse cálculo na forma usual, temos o seguinte código:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(<span class="kw">sum</span>(x))</code></pre></div>
+<pre><code>## [1] 3.162278</code></pre>
+<p>A princípio, a utilização do <code>%&gt;%</code> não parece trazer grandes vantagens, pois a expressão <code>sqrt(sum(x))</code> é facilmente compreendida. No entanto, se tivermos um grande número de funções aninhadas, a utilização do <code>pipe</code> transforma um código confuso e difícil de ser lido em algo simples e intuitivo. Como exemplo, imagine que você precise escrever uma receita de um bolo usando o R, e cada passo da receita é uma função:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">esfrie</span>(<span class="kw">asse</span>(<span class="kw">coloque</span>(<span class="kw">bata</span>(<span class="kw">acrescente</span>(<span class="kw">recipiente</span>(<span class="kw">rep</span>(<span class="st">&quot;farinha&quot;</span>, <span class="dv">2</span>), <span class="st">&quot;água&quot;</span>, <span class="st">&quot;fermento&quot;</span>, <span class="st">&quot;leite&quot;</span>, <span class="st">&quot;óleo&quot;</span>), <span class="st">&quot;farinha&quot;</span>, até =<span class="st"> &quot;macio&quot;</span>), duraçã<span class="dt">o =</span> <span class="st">&quot;3min&quot;</span>), <span class="dt">lugar =</span> <span class="st">&quot;forma&quot;</span>, <span class="dt">tipo =</span> <span class="st">&quot;grande&quot;</span>, <span class="dt">untada =</span> T), duraçã<span class="dt">o =</span> <span class="st">&quot;50min&quot;</span>), <span class="st">&quot;geladeira&quot;</span>, <span class="st">&quot;20min&quot;</span>)</code></pre></div>
+<p>Tente entender o que é preciso fazer. Nada fácil, correto? Agora escrevemos usando o operador <code>%&gt;%</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">recipiente</span>(<span class="kw">rep</span>(<span class="st">&quot;farinha&quot;</span>, <span class="dv">2</span>), <span class="st">&quot;água&quot;</span>, <span class="st">&quot;fermento&quot;</span>, <span class="st">&quot;leite&quot;</span>, <span class="st">&quot;óleo&quot;</span>) %&gt;%
+<span class="st">  </span><span class="kw">acrescente</span>(<span class="st">&quot;farinha&quot;</span>, até =<span class="st"> &quot;macio&quot;</span>) %&gt;%
+<span class="st">  </span><span class="kw">bata</span>(duraçã<span class="dt">o =</span> <span class="st">&quot;3min&quot;</span>) %&gt;%
+<span class="st">  </span><span class="kw">coloque</span>(<span class="dt">lugar =</span> <span class="st">&quot;forma&quot;</span>, <span class="dt">tipo =</span> <span class="st">&quot;grande&quot;</span>, <span class="dt">untada =</span> T) %&gt;%
+<span class="st">  </span><span class="kw">asse</span>(duraçã<span class="dt">o =</span> <span class="st">&quot;50min&quot;</span>) %&gt;%
+<span class="st">  </span><span class="kw">esfrie</span>(<span class="st">&quot;geladeira&quot;</span>, <span class="st">&quot;20min&quot;</span>)</code></pre></div>
+<p>Agora o código realmente parece uma receita de bolo.</p>
+<p>Para mais informações sobre o <code>pipe</code> e exemplos de utilização, visite a página <a href="http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html">Ceci n’est pas un pipe</a>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="setup.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="set-up.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-setup.Rmd",
+"text": null
+},
+"download": ["ragmatic.pdf", "ragmatic.word"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

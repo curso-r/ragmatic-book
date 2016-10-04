@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>R pragmático</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016.">
+  <meta name="generator" content="bookdown 0.1.3 and GitBook 2.6.7">
+
+  <meta property="og:title" content="R pragmático" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016." />
+  <meta name="github-repo" content="curso-r/ragmatic-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="R pragmático" />
+  
+  <meta name="twitter:description" content="Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016." />
+  
+
+<meta name="author" content="Julio Trecenti">
+
+<meta name="date" content="2016-10-03">
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="pacote-lubridate-para-trabalhar-com-datas.html">
+<link rel="next" href="forcats-para-trabalhar-com-factors.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Pragmático</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Placeholder</a></li>
+<li class="chapter" data-level="2" data-path="introducao.html"><a href="introducao.html"><i class="fa fa-check"></i><b>2</b> Introdução</a></li>
+<li class="chapter" data-level="3" data-path="visualizacao-de-dados.html"><a href="visualizacao-de-dados.html"><i class="fa fa-check"></i><b>3</b> Visualização de dados</a></li>
+<li class="chapter" data-level="4" data-path="suppressmessagesread-csvdatalista-csv.html"><a href="suppressmessagesread-csvdatalista-csv.html"><i class="fa fa-check"></i><b>4</b> suppressMessages(read_csv(‘data/lista.csv’)) %&gt;%</a><ul>
+<li class="chapter" data-level="4.1" data-path="pacote-lubridate-para-trabalhar-com-datas.html"><a href="pacote-lubridate-para-trabalhar-com-datas.html"><i class="fa fa-check"></i><b>4.1</b> Pacote <code>lubridate</code> para trabalhar com datas</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="pacote-lubridate-para-trabalhar-com-datas.html"><a href="pacote-lubridate-para-trabalhar-com-datas.html#exercicio"><i class="fa fa-check"></i><b>4.1.1</b> Exercício</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html"><i class="fa fa-check"></i><b>4.2</b> Pacote <code>stringr</code> para trabalhar com textos</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html#expressoes-regulares"><i class="fa fa-check"></i><b>4.2.1</b> Expressões regulares</a></li>
+<li class="chapter" data-level="4.2.2" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html#funcoes-do-stringr"><i class="fa fa-check"></i><b>4.2.2</b> Funções do <code>stringr</code></a></li>
+<li class="chapter" data-level="4.2.3" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html#exemplo"><i class="fa fa-check"></i><b>4.2.3</b> Exemplo</a></li>
+<li class="chapter" data-level="4.2.4" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html#exercicio-1"><i class="fa fa-check"></i><b>4.2.4</b> Exercício</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="forcats-para-trabalhar-com-factors.html"><a href="forcats-para-trabalhar-com-factors.html"><i class="fa fa-check"></i><b>4.3</b> Forcats para trabalhar com factors</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html"><i class="fa fa-check"></i><b>5</b> Transformação de dados</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R pragmático</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="pacote-stringr-para-trabalhar-com-textos" class="section level2">
+<h2><span class="header-section-number">4.2</span> Pacote <code>stringr</code> para trabalhar com textos</h2>
+<p>O R básico não tem uma sintaxe consistente para trabalhar com textos. O pacote <code>stringr</code> ajuda a realizar todas as tarefas básicas de manipulação de texto, exigindo que o usuário estude apenas uma sintaxe. O <code>stringr</code> também é construído sobre a <a href="http://site.icu-project.org/">biblioteca ICU</a>, implementada em <code>C</code> e <code>C++</code>, apresentando resultados rápidos e confiáveis.</p>
+<p>As regras básicas do pacote são:</p>
+<ul>
+<li>As funções de manipulação de texto começam com <code>str_</code>. Caso esqueça o nome de uma função, basta digitar <code>stringr::str_</code> e apertar <code>TAB</code> para ver quais são as opções.</li>
+<li>O primeiro argumento da função é sempre uma <code>string</code>.</li>
+</ul>
+<p>Antes de listar as funções, precisamos estudar o básico de expressões regulares.</p>
+<div id="expressoes-regulares" class="section level3">
+<h3><span class="header-section-number">4.2.1</span> Expressões regulares</h3>
+<p>Expressão regular ou <em>regex</em> é uma sequência concisa de caracteres que representa várias strings. Entender o básico de expressões regulares é indispensável para trabalhar com textos.</p>
+<p>Vamos estudar expressões regulares através de exemplos e com a função <code>str_detect()</code>. Essa função retorna <code>TRUE</code> se uma string atende à uma expressão regular e <code>FALSE</code> em caso contrário.</p>
+<p>A tabela abaixo mostra a aplicação de seis <code>regex</code> a seis strings distintas.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(stringr)
+testes &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;ban&#39;</span>, <span class="st">&#39;banana&#39;</span>, <span class="st">&#39;abandonado&#39;</span>, <span class="st">&#39;pranab anderson&#39;</span>, <span class="st">&#39;BANANA&#39;</span>, <span class="st">&#39;ele levou ban&#39;</span>)
+
+expressoes &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="st">&#39;ban&#39;</span>, <span class="co"># reconhece tudo que tenha &quot;ban&quot;, mas não ignora case</span>
+  <span class="st">&#39;BAN&#39;</span>, <span class="co"># reconhece tudo que tenha &quot;BAN&quot;, mas não ignora case</span>
+  <span class="kw">regex</span>(<span class="st">&#39;ban&#39;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>), <span class="co"># reconhece tudo que tenha &quot;ban&quot;, ignorando case</span>
+  <span class="st">&#39;ban$&#39;</span>, <span class="co"># reconhece apenas o que termina exatamente em &quot;ban&quot;</span>
+  <span class="st">&#39;^ban&#39;</span>, <span class="co"># reconhece apenas o que começa exatamente com &quot;ban&quot;</span>
+  <span class="st">&#39;b ?an&#39;</span> <span class="co"># reconhece tudo que tenha &quot;ban&quot;, com ou sem espaço entre o &quot;b&quot; e o &quot;a&quot;</span>
+)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">regex</th>
+<th align="left">ban</th>
+<th align="left">banana</th>
+<th align="left">abandonado</th>
+<th align="left">pranab anderson</th>
+<th align="left">BANANA</th>
+<th align="left">ele levou ban</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ban</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">BAN</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">ban</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">ban$</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">^ban</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">b ?an</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+</tr>
+</tbody>
+</table>
+<div id="quantificadores" class="section level4">
+<h4><span class="header-section-number">4.2.1.1</span> Quantificadores</h4>
+<p>Os caracteres <code>+</code>, <code>*</code> e <code>{x,y}</code> indicam quantas vezes um padrão se repete:</p>
+<ul>
+<li><code>ey+</code> significa <code>e</code> e depois <code>y</code> “<strong>uma vez</strong> ou mais”. Por exemplo, reconhece <code>hey</code>, <code>heyy</code>, <code>a eyyy</code>, mas não reconhece <code>e</code>, <code>y</code> nem <code>yy</code>.</li>
+<li><code>ey*</code> significa “<strong>zero vezes</strong> ou mais”. Por exemplo, reconhece <code>hey</code>, <code>heyy</code>, <code>a eyyy</code> e <code>e</code>, mas não reconhece <code>y</code> nem <code>yy</code>.</li>
+<li><code>ey{3}</code> significa “exatamente três vezes”. Por exemplo, reconhece <code>eyyy</code> e <code>eyyyy</code>, mas não reconhece <code>eyy</code>.</li>
+<li><code>ey{1,3}</code> significa “entre uma e três vezes”.</li>
+</ul>
+<p>Para aplicar um quantificador a um conjunto de caracteres, use parênteses. Por exemplo, <code>(ey )+</code> reconhece <code>ey ey</code>.</p>
+</div>
+<div id="conjuntos" class="section level4">
+<h4><span class="header-section-number">4.2.1.2</span> Conjuntos</h4>
+<p>Colocando caracteres dentro de <code>[]</code>, reconhecemos quaisquer caracteres desse conjunto. Alguns exemplos práticos:</p>
+<ul>
+<li><code>[Cc]asa</code> para reconhecer “casa” em maiúsculo ou minúsculo.</li>
+<li><code>[0-9]</code> para reconhecer somente números. O mesmo vale para letras <code>[a-z]</code>, <code>[A-Z]</code>, <code>[a-zA-Z]</code> etc.</li>
+<li>O símbolo <code>^</code> dentro do colchete significa negação. Por exemplo, <code>[^0-9]</code> significa pegar tudo o que não é número.</li>
+<li>O símbolo <code>.</code> fora do colchete indica “qualquer caractere”, mas dentro do colchete é apenas ponto.</li>
+<li>Use <code>[[:space:]]+</code> para reconhecer espaços e <code>[[:punct:]]+</code> para reconhecer pontuações.</li>
+</ul>
+</div>
+<div id="miscelanea" class="section level4">
+<h4><span class="header-section-number">4.2.1.3</span> Miscelânea</h4>
+<ul>
+<li>Use <code>abjutils::rm_accent()</code> para retirar os acentos de um texto.</li>
+<li>Use <code>|</code> para opções, por exemplo <code>desfavor|desprov</code> reconhece tanto “desfavorável” quanto “desprovido”</li>
+<li><code>\n</code> pula linha, <code>\f</code> é final da página, <code>\t</code> é tab. Use <code>\</code> para transformar caracteres especiais em literais.</li>
+<li><code>tolower()</code> e <code>toupper()</code> para mudar o case de uma string.</li>
+</ul>
+<p>A lista de possibilidades com expressões regulares é extensa. Um bom lugar para testar o funcionamento de expressões regulares é o <a href="https://regex101.com/">regex101</a>.</p>
+</div>
+</div>
+<div id="funcoes-do-stringr" class="section level3">
+<h3><span class="header-section-number">4.2.2</span> Funções do <code>stringr</code></h3>
+<ul>
+<li><p><code>str_detect()</code> retorna <code>TRUE</code> se a regex é compatível com a string e <code>FALSE</code> caso contrário</p></li>
+<li><p><code>str_lengh()</code> retorna o comprimento de uma string.</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_length</span>(<span class="st">&#39;hye&#39;</span>)</code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<ul>
+<li><code>str_trim()</code> retira espaços e quebras de linha/tabs no início ou final de string.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;</span><span class="ch">\n</span><span class="st">essa      string é muito suja       </span><span class="ch">\n</span><span class="st">&#39;</span>
+<span class="kw">str_trim</span>(string)</code></pre></div>
+<pre><code>## [1] &quot;essa      string é muito suja&quot;</code></pre>
+<ul>
+<li><code>str_replace()</code> e <code>str_replace_all()</code> substituem um padrão (ou todos) encontrado para um outro padrão</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;heyyy ui yy&#39;</span>
+<span class="kw">str_replace</span>(string, <span class="st">&#39;y&#39;</span>, <span class="st">&#39;x&#39;</span>)</code></pre></div>
+<pre><code>## [1] &quot;hexyy ui yy&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace</span>(string, <span class="st">&#39;y+&#39;</span>, <span class="st">&#39;x&#39;</span>)</code></pre></div>
+<pre><code>## [1] &quot;hex ui yy&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace_all</span>(string, <span class="st">&#39;y&#39;</span>, <span class="st">&#39;x&#39;</span>)</code></pre></div>
+<pre><code>## [1] &quot;hexxx ui xx&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace_all</span>(<span class="st">&#39;string     com    muitos espaços&#39;</span>, <span class="st">&#39; +&#39;</span>, <span class="st">&#39; &#39;</span>) <span class="co"># tirar espaços extras</span></code></pre></div>
+<pre><code>## [1] &quot;string com muitos espaços&quot;</code></pre>
+<ul>
+<li><code>str_match()</code> e <code>str_match_all()</code> extrai pedaços da string identificados pela regex. Caso queira extrair somente a parte identificada, use parênteses.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frases &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a roupa do rei&#39;</span>, <span class="st">&#39;de roma&#39;</span>, <span class="st">&#39;o rato roeu&#39;</span>)
+<span class="kw">str_match</span>(frases, <span class="st">&#39;roe&#39;</span>)</code></pre></div>
+<pre><code>##      [,1] 
+## [1,] NA   
+## [2,] NA   
+## [3,] &quot;roe&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_match_all</span>(frases, <span class="st">&#39;ro&#39;</span>)</code></pre></div>
+<pre><code>## [[1]]
+##      [,1]
+## [1,] &quot;ro&quot;
+## 
+## [[2]]
+##      [,1]
+## [1,] &quot;ro&quot;
+## 
+## [[3]]
+##      [,1]
+## [1,] &quot;ro&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_match</span>(frases, <span class="st">&#39;o (ro)&#39;</span>)</code></pre></div>
+<pre><code>##      [,1]   [,2]
+## [1,] NA     NA  
+## [2,] NA     NA  
+## [3,] &quot;o ro&quot; &quot;ro&quot;</code></pre>
+<ul>
+<li><code>str_split()</code> separa uma string em várias de acordo com um separador.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;eu sei, usar virgulas, de forma, perfeita&#39;</span>
+
+<span class="kw">str_split</span>(string, <span class="st">&#39;, &#39;</span>)</code></pre></div>
+<pre><code>## [[1]]
+## [1] &quot;eu sei&quot;        &quot;usar virgulas&quot; &quot;de forma&quot;      &quot;perfeita&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_split</span>(string, <span class="st">&#39;, &#39;</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>##      [,1]     [,2]            [,3]       [,4]      
+## [1,] &quot;eu sei&quot; &quot;usar virgulas&quot; &quot;de forma&quot; &quot;perfeita&quot;</code></pre>
+<ul>
+<li><code>str_split_fixed()</code> faz o mesmo que <code>str_split()</code>, mas separa apenas <code>n</code> vezes</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_split_fixed</span>(string, <span class="st">&#39;, &#39;</span>, <span class="dv">3</span>)</code></pre></div>
+<pre><code>##      [,1]     [,2]            [,3]                
+## [1,] &quot;eu sei&quot; &quot;usar virgulas&quot; &quot;de forma, perfeita&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_split_fixed</span>(string, <span class="st">&#39;, &#39;</span>, <span class="dv">4</span>) <span class="co"># igual a str_split(string, simplify = TRUE)</span></code></pre></div>
+<pre><code>##      [,1]     [,2]            [,3]       [,4]      
+## [1,] &quot;eu sei&quot; &quot;usar virgulas&quot; &quot;de forma&quot; &quot;perfeita&quot;</code></pre>
+<ul>
+<li><code>str_sub()</code> extrai uma parte da string de acordo com os índices.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;quero pegar só uma parte disso&#39;</span>
+<span class="kw">str_sub</span>(string, <span class="dv">13</span>, <span class="dv">14</span>)</code></pre></div>
+<pre><code>## [1] &quot;só&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_sub</span>(string, -<span class="dv">5</span>, -<span class="dv">1</span>) <span class="co"># usar números negativos para voltar do final da string</span></code></pre></div>
+<pre><code>## [1] &quot;disso&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">indices &lt;-<span class="st"> </span><span class="kw">str_locate</span>(string, <span class="st">&#39;parte&#39;</span>)
+indices</code></pre></div>
+<pre><code>##      start end
+## [1,]    20  24</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_sub</span>(string, indices) <span class="co"># pode ser útil usar com str_locate.</span></code></pre></div>
+<pre><code>## [1] &quot;parte&quot;</code></pre>
+<ul>
+<li><code>str_subset()</code> retorna somente as strings compatíveis com a regex.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frases &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a roupa do rei&#39;</span>, <span class="st">&#39;de roma&#39;</span>, <span class="st">&#39;o rato roeu&#39;</span>)
+<span class="kw">str_subset</span>(frases, <span class="st">&#39;d[eo]&#39;</span>)</code></pre></div>
+<pre><code>## [1] &quot;a roupa do rei&quot; &quot;de roma&quot;</code></pre>
+</div>
+<div id="exemplo" class="section level3">
+<h3><span class="header-section-number">4.2.3</span> Exemplo</h3>
+</div>
+<div id="exercicio-1" class="section level3">
+<h3><span class="header-section-number">4.2.4</span> Exercício</h3>
+<!-- ---------------------------------------------------------------------- -->
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="pacote-lubridate-para-trabalhar-com-datas.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="forcats-para-trabalhar-com-factors.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-vetores.Rmd",
+"text": null
+},
+"download": ["ragmatic.pdf", "ragmatic.word"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

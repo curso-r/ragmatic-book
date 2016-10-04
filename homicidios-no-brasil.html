@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>R pragmático</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016.">
+  <meta name="generator" content="bookdown 0.1.3 and GitBook 2.6.7">
+
+  <meta property="og:title" content="R pragmático" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016." />
+  <meta name="github-repo" content="curso-r/ragmatic-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="R pragmático" />
+  
+  <meta name="twitter:description" content="Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016." />
+  
+
+<meta name="author" content="Julio Trecenti">
+
+<meta name="date" content="2016-10-03">
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="introducao.html">
+<link rel="next" href="literature.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Pragmático</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Reprodutibilidade</a></li>
+<li class="chapter" data-level="2" data-path="introducao.html"><a href="introducao.html"><i class="fa fa-check"></i><b>2</b> Introdução</a><ul>
+<li class="chapter" data-level="2.1" data-path="homicidios-no-brasil.html"><a href="homicidios-no-brasil.html"><i class="fa fa-check"></i><b>2.1</b> Homicídios no Brasil</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>3</b> Literature</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R pragmático</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="homicidios-no-brasil" class="section level2">
+<h2><span class="header-section-number">2.1</span> Homicídios no Brasil</h2>
+<p>O Brasil é o país recorde de homicídios no mundo. Ainda que tenhamos menos de 3% da população mundial, 11% de todos os homicídios ocorrem em nosso país (UNODC, 2013). Segundo o Instituto de Pesquisas Econômicas Aplicadas e o Fórum Brasileiro de Segurança Pública (IPEA e FBSP, 2016), foram quase 60 mil homicídios dolosos no país em 2014. Se calcularmos a proporção destes crimes perante nossa população identificando quantos homicídios acontecem a cada cem mil habitantes, obtemos uma taxa de 29,1 homicídios, enquanto a média mundial é de 6,2 a cada cem mil pessoas (ONU, 2015).</p>
+<!-- IMAGEM -->
+<p>Fontes: Mapa da Violência 2010 e Atlas da Violência de 2016</p>
+<p>Podemos observar que o ritmo de crescimento era mais acelerado até o ano de 2003. No final deste ano foi aprovada a lei 10.826/2003<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, que tornou a posse de armas de fogo mais controlada no país. Ainda que esta não seja a única explicação para a queda, há um consenso entre pesquisadores da área sobre a relevância do controle de armas na queda dos homicídios a partir de 2003.</p>
+<p>No entanto, olhar apenas o dado nacional faz com que percamos importantes variações regionais. Nos últimos dez anos estados como São Paulo, Rio de Janeiro e Pernambuco apresentaram quedas nos homicídios entre 52% e 27% ao mesmo tempo em que o Rio Grande do Norte apresentou crescimento de 166%, o Maranhão de 209% e o Ceará de 166%. Essas discrepâncias indicam para a existência de boas práticas a serem estudadas individualmente<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
+<p>Existem grandes variações também entre grupos demográficos. Os homens são 8,6 vezes mais vitimados por homicídios do que as mulheres, o que faz com que a variação nos homicídios de mulheres fique muitas vezes invisibilizada apesar de ter aumentado 11% nos últimos dez anos (IPEA e FBSP, 2016). Sabendo que a maioria dos casos envolvendo mulheres têm dinâmicas particulares, é importante a análise de sua variação separadamente. O recorte de idade identifica que os jovens entre 15 e 29 anos têm o dobro de chance de serem assassinados do que o restante da população.</p>
+<p>A cor da pele também revela tendências importantes. Enquanto o homicídio de negros aumentou 18% nos últimos dez anos, os homicídios de pessoas que não se declaram negras nem pardas caiu 15%. Atualmente há uma sobrerrepresentação dos negros e pardos entre as vítimas, o que faz com que seu índice de homicídios seja 30% maior do que o da população em geral (IPEA e FBSP, 2016). Ser homem, negro e ter entre 15 e 29 anos é estar, portanto, entre a parcela da população mais vulnerável ao homicídio no Brasil.</p>
+<p>Por fim, ainda com base na pesquisa do IPEA e do FBSP, podemos observar um padrão quanto ao instrumento usado no crime. Ao longo dos últimos dez anos mais de 70% dos homicídios foram cometidos com armas de fogo, evidenciando a importância do controle de sua circulação. Todos esses dados são necessários para compreendermos a enorme dimensão do problema dos homicídios no país, entendermos que há diferenças regionais importantes, mas que, apesar delas, há também alguns padrões constantes no país.</p>
+<p>O índice de resolução de homicídios no Brasil, apesar de ser um dado central para avaliação da capacidade de resposta do Estado Brasileiro, não é conhecido<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>. Seja pela falta de órgão que o sistematize, seja pela falta de consenso sobre se deveríamos medir inquéritos relatados com autoria identificada, suspeitos denunciados ou réus condenados. O índice de resolução de homicídios mais utilizado se refere ao porcentual de inquéritos denunciados indicando em torno dos 8% (ENASP, 2012), o que significa dizer que apenas 8 em cada 100 homicídios têm os suspeitos publicamente acusados após a investigação policial.</p>
+<p>Esta estimativa varia entre os estados, no entanto, não há estimativas de todos os estados e mesmo as mais altas ainda são preocupantemente baixas. No Rio de Janeiro, por exemplo, foi identificada uma taxa de 33% (Misse e Vargas, 2007) dos homicídios alcançando a fase judicial e apenas 8% resultando em sanção penal (Cano e Duarte, 2010). Em São Paulo as estimativas ficam em cerca de 22% também se referindo apenas à denúncia (Ribeiro, 2010). Em todos os casos ainda estamos muito abaixo das médias de países como os Estados Unidos, com cerca de 65% ou da França, com cerca de 80% (ENASP, 2012).</p>
+<p>A falta de resposta aos crimes mais graves gera uma sensação de impunidade generalizada (Costa, 2015).<br />
+Uma percepção que não condiz com a realidade um país com mais de 600 mil pessoas presas e a quarta maior população carcerária do mundo. Destes, apenas 14% estão presos por homicídio (Depen, 2014). A maior parte está cumprindo penas por crimes menos graves como tráfico, roubo e furto e há uma parcela preocupante (41%) que sequer foi julgada.</p>
+<p>A indignação popular gera um clamor por respostas imediatas que tendem a abordar apenas a parte final de toda a cadeia do sistema de segurança e justiça, a pena de prisão. A falta de confiança nas instituições estatais foi aferida em pesquisa recente em que apenas 33% das pessoas afirmaram confiar nas polícias, 45% no Ministério Público e 25% no Judiciário (FGV, 2015). Esta desconfiança somada ao medo e à indignação também podem levar ao apoio de medidas ilegais e incompatíveis com o Estado de Direito. Entre elas vemos os casos de linchamentos e o apoio de 50% da população à morte de criminosos (Datafolha e FBSP, 2015), algo desconexo de qualquer noção de civilidade e legalismo, valores cujo zelo é a tarefa primordial das instituições policiais e judiciais por serem elementos fundamentais em qualquer Estado Democrático.</p>
+<p>Apesar de ser necessário prestar atenção ao que diz a sociedade para a concepção de uma boa política pública, é necessário que os operadores deste sistema identifiquem neste clamor, muitas vezes passional e sem conhecimento do funcionamento de todo o sistema, qual é o incômodo central e qual a forma legal e mais eficaz de supri-lo. Ao longo deste Caderno buscaremos demonstrar que há pontos importantes a serem trabalhados em cada uma das fases de identificação e julgamento dos autores de homicídios.</p>
+
+</div>
+<!-- </div> -->
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>A Lei 10.826, também conhecida como Estatuto do Desarmamento foi aprovada em dezembro de 2003. A Lei proibiu civis de andarem armados restringindo o porte às categorias que atuam diretamente no campo da segurança pública. Além disso, trouxe requisitos mais rígidos para a compra e posse de armas exigindo idade mínima de 25 anos, residência fixa, testes psicológicos e técnicos, entre outros. Para contribuir com o trabalho da polícia, também ampliou a pena do crime de porte de arma de fogo e criou o crime de Tráfico Internacional de Arma de fogo (artigo 18).<a href="homicidios-no-brasil.html#fnref1">↩</a></p></li>
+<li id="fn2"><p>O caso de São Paulo, por exemplo, já foi objeto de diversas pesquisas e ainda gera controvérsias, como a retratada <a href="http://www1.folha.uol.com.br/ilustrissima/2016/03/1753525-virtudes-escondidas-razoes-para-a-queda-dos-homicidios-em-sao-paulo.shtml">neste artigo</a>. Acesso em abril de 2016.<a href="homicidios-no-brasil.html#fnref2">↩</a></p></li>
+<li id="fn3"><p>Um debate mais aprofundado sobre esta questão é o artigo “Criação da base de indicadores de investigação de homicídios no Brasil” de Arthur Trindade Costa disponível <a href="http://revista.forumseguranca.org.br/index.php/rbsp/article/viewFile/392/184">aqui</a>. Acesso em abril de 2016.<a href="homicidios-no-brasil.html#fnref3">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introducao.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="literature.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-intro.Rmd",
+"text": null
+},
+"download": ["ragmatic.pdf", "ragmatic.word"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
