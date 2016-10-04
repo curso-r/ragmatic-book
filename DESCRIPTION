@@ -1,0 +1,10 @@
+Package: ragmaticBook
+Title: Nothing, just a helper.
+Version: 0.0.0.9000
+Authors@R: person("Julio", "Trecenti", email = "jtrecenti@abj.org.br", role = c("aut", "cre"))
+Description: Nothing, just a helper.
+Depends: R (>= 3.3.1)
+License: GNU
+Encoding: UTF-8
+Imports: bookdown
+Remotes: rstudio/bookdown
