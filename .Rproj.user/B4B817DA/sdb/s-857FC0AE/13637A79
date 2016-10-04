@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"R pragmático\"\nauthor: \"Julio Trecenti\"\ndate: \"October 4, 2016\"\noutput: ioslides_presentation\n---\n\n",
+    "created" : 1475575406820.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3932948515",
+    "id" : "13637A79",
+    "lastKnownWriteTime" : 1475575428,
+    "last_content_update" : 1475575428784,
+    "path" : "~/ragmatic01.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
