@@ -1,0 +1,9 @@
+book_filename: "ragmatic"
+chapter_name: !expr function(i) paste0(i, '. ')
+header-includes:
+   - \setlength\parindent{20pt}
+   - \linespread{1.5}
+   - \usepackage[scaled=.8]{beramono}
+   - \renewcommand\arraystretch{0.7}
+   - \renewcommand{\familydefault}{\sfdefault}
+   - \setmonofont{\ttdefault}
