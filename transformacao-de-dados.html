@@ -8,7 +8,7 @@
   <title>R pragmático</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016.">
-  <meta name="generator" content="bookdown 0.1.3 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.16 and GitBook 2.6.7">
 
   <meta property="og:title" content="R pragmático" />
   <meta property="og:type" content="book" />
@@ -25,8 +25,14 @@
 
 <meta name="author" content="Julio Trecenti">
 
-<meta name="date" content="2016-10-04">
+  
+<meta name="date" content="2016-10-19">
 
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,7 +40,7 @@
   
   
 <link rel="prev" href="visualizacao-de-dados.html">
-
+<link rel="next" href="modelos.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -49,6 +55,26 @@
 
 
 
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<link href="libs/plotlyjs-1.16.3/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.16.3/plotly-latest.min.js"></script>
+<script src="libs/plotly-binding-4.5.5.9000/plotly.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.1/dygraphs.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+<link href="libs/leaflet-0.7.3/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-0.7.3/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-1.0.1/leaflet.js"></script>
+<link href="libs/leaflet-markercluster-0.4.0/MarkerCluster.css" rel="stylesheet" />
+<link href="libs/leaflet-markercluster-0.4.0/MarkerCluster.Default.css" rel="stylesheet" />
+<script src="libs/leaflet-markercluster-0.4.0/leaflet.markercluster.js"></script>
 
 
 <style type="text/css">
@@ -115,11 +141,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.4" data-path="principios.html"><a href="principios.html#github"><i class="fa fa-check"></i><b>2.4</b> GitHub</a></li>
 <li class="chapter" data-level="2.5" data-path="principios.html"><a href="principios.html#pipe"><i class="fa fa-check"></i><b>2.5</b> Pipe</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="set-up.html"><a href="set-up.html"><i class="fa fa-check"></i><b>3</b> Análise exploratória: inscritos no curso</a><ul>
-<li class="chapter" data-level="3.1" data-path="set-up.html"><a href="set-up.html#objetivos"><i class="fa fa-check"></i><b>3.1</b> Objetivos</a></li>
-<li class="chapter" data-level="3.2" data-path="set-up.html"><a href="set-up.html#base-de-dados"><i class="fa fa-check"></i><b>3.2</b> Base de dados</a></li>
-<li class="chapter" data-level="3.3" data-path="set-up.html"><a href="set-up.html#data-tidying"><i class="fa fa-check"></i><b>3.3</b> Data tidying</a></li>
-<li class="chapter" data-level="3.4" data-path="set-up.html"><a href="set-up.html#alguns-graficos"><i class="fa fa-check"></i><b>3.4</b> Alguns gráficos</a></li>
+<li class="chapter" data-level="3" data-path="inscritos.html"><a href="inscritos.html"><i class="fa fa-check"></i><b>3</b> Análise exploratória: inscritos no curso</a><ul>
+<li class="chapter" data-level="3.1" data-path="inscritos.html"><a href="inscritos.html#objetivos"><i class="fa fa-check"></i><b>3.1</b> Objetivos</a></li>
+<li class="chapter" data-level="3.2" data-path="inscritos.html"><a href="inscritos.html#base-de-dados"><i class="fa fa-check"></i><b>3.2</b> Base de dados</a></li>
+<li class="chapter" data-level="3.3" data-path="inscritos.html"><a href="inscritos.html#data-tidying"><i class="fa fa-check"></i><b>3.3</b> Data tidying</a></li>
+<li class="chapter" data-level="3.4" data-path="inscritos.html"><a href="inscritos.html#alguns-graficos"><i class="fa fa-check"></i><b>3.4</b> Alguns gráficos</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html"><i class="fa fa-check"></i><b>4</b> Trabalhando com vetores especiais</a><ul>
 <li class="chapter" data-level="4.1" data-path="trabalhando-com-vetores-especiais.html"><a href="trabalhando-com-vetores-especiais.html#pacote-lubridate-para-trabalhar-com-datas"><i class="fa fa-check"></i><b>4.1</b> Pacote <code>lubridate</code> para trabalhar com datas</a><ul>
@@ -158,6 +184,45 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="6.1.13" data-path="transformacao-de-dados.html"><a href="transformacao-de-dados.html#um-pouco-mais-de-transformacao-de-dados"><i class="fa fa-check"></i><b>6.1.13</b> Um pouco mais de transformação de dados</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="7" data-path="modelos.html"><a href="modelos.html"><i class="fa fa-check"></i><b>7</b> Modelos</a><ul>
+<li class="chapter" data-level="7.1" data-path="modelos.html"><a href="modelos.html#recuperacao-de-imagens"><i class="fa fa-check"></i><b>7.1</b> Recuperação de imagens</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="modelos.html"><a href="modelos.html#imagens-.jpg"><i class="fa fa-check"></i><b>7.1.1</b> Imagens <strong>.jpg</strong></a></li>
+<li class="chapter" data-level="7.1.2" data-path="modelos.html"><a href="modelos.html#objetivo"><i class="fa fa-check"></i><b>7.1.2</b> Objetivo</a></li>
+<li class="chapter" data-level="7.1.3" data-path="modelos.html"><a href="modelos.html#preparacao-do-banco-de-dados"><i class="fa fa-check"></i><b>7.1.3</b> Preparação do Banco de dados</a></li>
+<li class="chapter" data-level="7.1.4" data-path="modelos.html"><a href="modelos.html#base-de-treino-e-base-de-teste"><i class="fa fa-check"></i><b>7.1.4</b> Base de treino e base de teste</a></li>
+<li class="chapter" data-level="7.1.5" data-path="modelos.html"><a href="modelos.html#modelo-linear"><i class="fa fa-check"></i><b>7.1.5</b> Modelo linear</a></li>
+<li class="chapter" data-level="7.1.6" data-path="modelos.html"><a href="modelos.html#arvore-de-decisao"><i class="fa fa-check"></i><b>7.1.6</b> Árvore de decisão</a></li>
+<li class="chapter" data-level="7.1.7" data-path="modelos.html"><a href="modelos.html#modelo-aditivo-generalizado-gam"><i class="fa fa-check"></i><b>7.1.7</b> Modelo aditivo generalizado (GAM)</a></li>
+<li class="chapter" data-level="7.1.8" data-path="modelos.html"><a href="modelos.html#random-forest"><i class="fa fa-check"></i><b>7.1.8</b> Random Forest</a></li>
+<li class="chapter" data-level="7.1.9" data-path="modelos.html"><a href="modelos.html#exercicio-outra-imagem"><i class="fa fa-check"></i><b>7.1.9</b> Exercício: Outra Imagem</a></li>
+<li class="chapter" data-level="7.1.10" data-path="modelos.html"><a href="modelos.html#captcha"><i class="fa fa-check"></i><b>7.1.10</b> Captcha</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="comunicacao.html"><a href="comunicacao.html"><i class="fa fa-check"></i><b>8</b> Comunicação</a><ul>
+<li class="chapter" data-level="8.1" data-path="comunicacao.html"><a href="comunicacao.html#relatorios"><i class="fa fa-check"></i><b>8.1</b> Relatórios</a></li>
+<li class="chapter" data-level="8.2" data-path="comunicacao.html"><a href="comunicacao.html#graficos-dinamicos"><i class="fa fa-check"></i><b>8.2</b> Gráficos dinâmicos</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="comunicacao.html"><a href="comunicacao.html#plotly"><i class="fa fa-check"></i><b>8.2.1</b> Plotly</a></li>
+<li class="chapter" data-level="8.2.2" data-path="comunicacao.html"><a href="comunicacao.html#html-widgets"><i class="fa fa-check"></i><b>8.2.2</b> Html Widgets</a></li>
+<li class="chapter" data-level="8.2.3" data-path="comunicacao.html"><a href="comunicacao.html#dygraphs"><i class="fa fa-check"></i><b>8.2.3</b> Dygraphs</a></li>
+<li class="chapter" data-level="8.2.4" data-path="comunicacao.html"><a href="comunicacao.html#dt"><i class="fa fa-check"></i><b>8.2.4</b> DT</a></li>
+<li class="chapter" data-level="8.2.5" data-path="comunicacao.html"><a href="comunicacao.html#leaflet"><i class="fa fa-check"></i><b>8.2.5</b> Leaflet</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="comunicacao.html"><a href="comunicacao.html#shiny"><i class="fa fa-check"></i><b>8.3</b> Shiny</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="comunicacao.html"><a href="comunicacao.html#comecando-com-um-exemplo"><i class="fa fa-check"></i><b>8.3.1</b> Começando com um exemplo</a></li>
+<li class="chapter" data-level="8.3.2" data-path="comunicacao.html"><a href="comunicacao.html#criando-outputs"><i class="fa fa-check"></i><b>8.3.2</b> Criando outputs</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="comunicacao.html"><a href="comunicacao.html#fazendo-mais-com-o-shiny"><i class="fa fa-check"></i><b>8.4</b> Fazendo mais com o shiny</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="comunicacao.html"><a href="comunicacao.html#shiny-server-pro"><i class="fa fa-check"></i><b>8.4.1</b> Shiny Server Pro</a></li>
+<li class="chapter" data-level="8.4.2" data-path="comunicacao.html"><a href="comunicacao.html#shinyapps.io"><i class="fa fa-check"></i><b>8.4.2</b> shinyapps.io</a></li>
+<li class="chapter" data-level="8.4.3" data-path="comunicacao.html"><a href="comunicacao.html#flexdashboards"><i class="fa fa-check"></i><b>8.4.3</b> Flexdashboards</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="comunicacao.html"><a href="comunicacao.html#apis-com-opencpu"><i class="fa fa-check"></i><b>8.5</b> APIs com opencpu</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="exemplo-flexdashboard.html"><a href="exemplo-flexdashboard.html"><i class="fa fa-check"></i><b>9</b> Exemplo flexdashboard</a><ul>
+<li class="chapter" data-level="9.0.1" data-path="exemplo-flexdashboard.html"><a href="exemplo-flexdashboard.html#compreendendo-as-flores"><i class="fa fa-check"></i><b>9.0.1</b> Compreendendo as flores</a></li>
+<li class="chapter" data-level="9.0.2" data-path="exemplo-flexdashboard.html"><a href="exemplo-flexdashboard.html#pnud---idh-municipal"><i class="fa fa-check"></i><b>9.0.2</b> PNUD - IDH municipal</a></li>
+<li class="chapter" data-level="9.0.3" data-path="exemplo-flexdashboard.html"><a href="exemplo-flexdashboard.html#milhas-por-galao"><i class="fa fa-check"></i><b>9.0.3</b> Milhas por galão</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -179,7 +244,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="transformacao-de-dados" class="section level1">
-<h1><span class="header-section-number">6. </span> Transformação de dados</h1>
+<h1><span class="header-section-number">6</span> Transformação de dados</h1>
 <p>A transformação de dados é uma tarefa usualmente dolorosa e demorada, podendo tomar a maior parte do tempo da análise. No entanto, como nosso interesse geralmente é na modelagem dos dados, essa tarefa é muitas vezes negligenciada.</p>
 <blockquote>
 <p>“(…) The fact that data science exists as a field is a colossal failure of statistics. To me, [what I do] is what statistics is all about. It is gaining insight from data using modelling and visualization. Data munging and manipulation is hard and statistics has just said that’s not our domain.”</p>
@@ -558,8 +623,8 @@ d_cjsg %&gt;%<span class="st"> </span>
           </div>
         </div>
       </div>
-<a href="visualizacao-de-dados.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="visualizacao-de-dados.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="modelos.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
@@ -587,7 +652,7 @@ gitbook.start({
 },
 "edit": {
 "link": "https://github.com/rstudio/bookdown-demo/edit/master/05-transform.Rmd",
-"text": null
+"text": "Edit"
 },
 "download": ["ragmatic.pdf", "ragmatic.word"],
 "toc": {
@@ -597,6 +662,17 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
