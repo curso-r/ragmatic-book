@@ -1,4 +1,4 @@
-# Análise exploratória: inscritos no curso {#set-up}
+# Análise exploratória: inscritos no curso {#inscritos}
 
 ```{r echo=FALSE}
 # suppressMessages(read_csv('data/lista.csv')) %>% 

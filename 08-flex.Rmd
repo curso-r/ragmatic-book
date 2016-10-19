@@ -1,0 +1,61 @@
+# Exemplo flexdashboard
+
+```{r}
+library(tidyverse)
+library(dygraphs)
+library(cea20160329)
+library(leaflet)
+library(falrec)
+library(lubridate)
+library(ggplot2)
+library(plotly)
+```
+
+```
+Column {data-width=600}
+-------------------------------------
+```
+
+### Compreendendo as flores
+    
+```{r}
+p <- iris %>% 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) + 
+  geom_point() +
+  guides(colour = FALSE) +
+  facet_wrap(~Species, ncol = 2) +
+  theme_bw()
+ggplotly(p)
+```
+    
+```
+Column {data-width=400}
+-------------------------------------
+```
+
+### PNUD - IDH municipal
+
+```{r}
+# devtools::install_github('jtrecenti/cea20160329')
+
+dados <- pnud
+lab <- 'Municipio: %s<br/>IDHM-Educação: %f<br/>IDHM-Renda: %f<br/>IDHM-Longevidade: %f'
+dados %>%
+  as_tibble() %>% 
+  filter(ano == 2010) %>% 
+  mutate(label = sprintf(lab, municipio, idhm_e, idhm_r, idhm_l)) %>%
+  leaflet() %>%
+  setView(lng = -50, lat = -17, zoom = 4) %>% 
+  addTiles() %>%
+  addMarkers(lng = ~lon, lat = ~lat, popup = ~label,
+             clusterOptions = markerClusterOptions())
+
+```
+
+### Milhas por galão
+
+```{r}
+# install.packages('DT')
+DT::datatable(mtcars)
+```
+

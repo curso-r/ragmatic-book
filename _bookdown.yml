@@ -1,5 +1,5 @@
 book_filename: "ragmatic"
-chapter_name: !expr function(i) paste0(i, '. ')
+#chapter_name: !expr function(i) paste0(i, '. ')
 header-includes:
    - \setlength\parindent{20pt}
    - \linespread{1.5}

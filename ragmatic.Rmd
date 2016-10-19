@@ -1,0 +1,1837 @@
+--- 
+title: "R pragmático"
+author: "Julio Trecenti"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: curso-r/ragmatic-book
+description: "Minicurso R Pragmático 11a aMostra Estatística IME-USP 2016."
+---
+
+# Setup
+
+O minicurso "R pragmático" é baseado no `tidyverse` (universo "arrumado"), um conjunto de pacotes do R que auxiliam o estatístico / cientista de dados na execução de diversas tarefas corriqueiras de forma eficiente e unificada. Pense em eficiência, mas não no sentido de velocidade de execução de algoritmos, mas sim na velocidade de solução de problemas.
+
+Atualmente, o melhor lugar para aprender sobre o `tidyverse` é no livro [R for data science](http://r4ds.had.co.nz/). Nesse minicurso abordamos partes desse livro e adicionamos outros, como práticas de modelgem preditiva e estudos de caso.
+
+**Público-alvo**
+
+- Estudantes de graduação em estatística que desejam ganhar tempo nos trabalhos da faculdade e entrar no mercado de trabalho com bons diferenciais.
+- Profissionais do mercado de trabalho que desejam inserir o R mo fluxo de atividades do setor/empresa.
+- Acadêmicos com interesse em tornar suas análises e códigos mais legíveis, reprodutíveis, eficientes e organizados.
+
+**Workflow das aulas:**
+
+- Aulas no laboratório de computação (CEC). Não precisa (mas pode) levar notebook.
+- Exercícios durante as aulas.
+- Leituras complementares e opcionais fora da sala de aula.
+
+**Requisitos básicos:**
+
+- Lógica de programação.
+- Veja [essa apresentação (aprox. 10 min)](http://curso-r.github.io/slides/aula_00_01_apresentacao.html) (slides: 13 ao 43).
+- Leia esse [post de blog (aprox. 5 min)](https://blog.rstudio.org/2016/09/15/tidyverse-1-0-0/).
+- Se quiser ganhar tempo, [crie uma conta no Github](http://github.com).
+
+**Conteúdo:**
+
+- Primeiro dia (04/10): introdução ao `tidyverse`, o operador `pipe`, trabalhando textos com `stringr`, trabalhando datas com `lubridate`.
+- Segundo dia (05/10): transformação de dados com `dplyr` e `tidyr`, visualização de dados com `ggplot2`.
+- Terceiro dia (06/10): elaboração de relatórios com `knitr` e `rmarkdown`, modelagem preditiva (parte 1).
+- Quarto dia (07/10) modelagem preditiva (parte 2), case studies e feedback.
+R for Data Science
+
+**Não vamos falar de:**
+
+- Programação eficiente com R. Para isso, veja [esse livro](https://bookdown.org/csgillespie/efficientR/), que aborda temas importantíssimos como *profiling*, paralelização, `Rcpp`.
+- Estudos envolvendo "big data". Para isso estude sobre [sparklyr](http://spark.rstudio.com/) e [tensorflow](https://rstudio.github.io/tensorflow/) e [mongodb](https://gist.github.com/Btibert3/7751989).
+
+## Diferenças entre C/C++ e R
+
+Na análise realizada na Seção \@ref(inscritos) notei que boa parte dos inscritos têm background em C/C++. Em uma comparação simples, o foco do C é eficiência e transparência, enquanto o do R é análise de dados e interatividade. Isso faz com que as duas linguagens sejam bem diferentes!
+
+Na prática, temos que
+
+- C é compilável, R é uma linguagem script.
+- R é uma linguagem funcional. Por exemplo, `(`, `&` e `+` são funções do R.
+- R é vetorizado. Observe esse sacrilégio
+
+```{r}
+a <- c(1, 2, 3)
+b <- c(1, 2, 3, 4, 5, 6)
+a + b 
+```
+
+Sim, isso funciona! O que acontece aqui é o fenômeno da *recliclagem* de vetores do R. Caso não esteja acostumado com essas idiossincrasias do R, veja [essa aula](http://curso-r.github.io/posts/aula01.html).
+
+- Você raramente usará loops (`for`, `while`) no R. Eles são ineficientes e não combinam com o estilo funcional da linguagem. Busque sempre realizar as operações com vetores, pois a maioria delas são implementadas em C e, portanto, mais eficientes.
+
+## Pacotes
+
+Se você não está no CEC, precisará instalar alguns pacotes para acompanhar o curso. Para instalar todas as dependências, rode
+
+```{r eval=FALSE}
+install.packages('devtools')
+devtools::install_github('curso-r/ragmatic')
+```
+
+Para visualizar todos os documentos que compõem esse livro, acesse [essa página](https://github.com/curso-r/ragmatic-book).
+
+<!--chapter:end:index.Rmd-->
+
+# Princípios
+
+## O tidyverse
+
+O `tidyverse` é um pacote do R, cuja única função é carregar outros pacotes do R. O conjunto desses pacotes forma o `tidyverse`. É considerado um "universo" a parte do R pois todas suas ferramentas possuem formas de uso consistentes e funcionam muito bem em conjunto.
+
+Os princípios do `tidyverse` seguem abaixo.
+
+1. **Eficiência algorítmica vs eficiência de trabalho**. Suposição: o tempo que o estatísco gasta pensando em como realizar uma operação é mais importante do que o tempo que o computador gasta para realizar um cálculo.
+1. **Tidy data**. Princípio para arrumação de base de dados que resolve 90% dos problemas reais. O objetivo em *arrumação de dados* é extrair e transformar uma base de dados até que ela esteja em formato *tidy*. Essa é uma boa prática de análise de dados que economiza muito tempo em qualquer trabalho. Uma base de dados é considerada "tidy" se
+    - Cada observação é uma linha do bd.
+    - Cada variável é uma coluna do bd.
+    - Cada dado está numa célula do bd.
+
+1. **Utilização do operador `%>%` (pipe)**.  
+
+    > "No matter how complex and polished the individual operations are, it is often the quality of the glue that most directly determines the power of the system."  
+    > -- Hal Abelson
+    > 
+
+1. **Aparato mnemônico**. Pacotes baseados em teoria e API consistentes.
+1. **Minimalidade e funções puras**. Funções sem *side-effects*. Interagem com o mundo através de inputs e outputs. Encaixa perfeitamente com o princípio do pipe
+1. *workflow* para ciência de dados
+
+<img src="http://r4ds.had.co.nz/diagrams/data-science.png" style="width: 500px;display: block;margin-left: auto;margin-right: auto "/>
+
+## RStudio
+
+O RStudio é a melhor IDE para usar o R. O programa possui diversas vantagens e praticamente nenhuma desvantagem. Caso tenha interesse em se ambientar e entender as características do RStudio, veja [essa página](https://csgillespie.github.io/efficientR/set-up.html#rstudio). 
+
+Uma importante funcionalidade do RStudio é a possibilidade de criar projetos. Uma estrutura recomendada para organização de pacotes segue abaixo.
+
+```{r, engine='bash', eval = FALSE}
+project/
+  - README.Rmd   # Descrição do pacote
+  - set-up.R     # Pacotes etc
+  - R/           # Código R, organizado com 0-load.R, 1-tidy.R, 2-vis.R, ...
+  - data/        # Dados (estruturados ou não)
+  - figures/     # gráficos (pode ficar dentro de output/)
+  - output/      # Relatórios em .Rmd, .tex etc
+  - project.Rproj
+```
+
+Outra possível forma de estruturar um projeto é organizando-o como um pacote do R:
+
+```{r, engine='bash', eval = FALSE}
+project/
+  - README.md    # Descrição do pacote
+  - DESCRIPTION  # Metadados estruturados do pacote e dependências
+  - NAMESPACE    # importações e exportações do pacote
+  - vignettes/   # Relatórios em .Rmd
+  - R/           # Funções do R
+  - data/        # Dados estruturados (tidy data)
+  - data-raw/    # Dados não estruturados e arqs 0-load.R, 1-tidy.R, 2-vis.R, ...
+  - project.Rproj
+```
+
+Para detalhes de como criar pacotes no R de forma eficiente, leia o [r-pkgs](http://r-pkgs.had.co.nz). Recomendo a adoção de um critério consistente para organização de projetos. O estatístico não pode perder tempo com a estruturação das pastas, então é melhor forçar uma estrutura pré-fixada do que planejar a melhor forma de organização para cada projeto.
+
+## RMarkdown
+
+O RMarkdown é um tipo de documento especial que contém tanto textos (em markdown) quanto códigos em R (em chunks). O markdown nada mais é do que um documento de texto com alguns padrões básicos de formatação, como negrito, itálico, títulos, subtítulos, itemização e referências cruzadas. Já os chunks são pedaços de códigos em R encapsulados por três crases "```". Os códigos são executados sempre que o documento é processado para algum formato específico.
+
+A utilização do RMarkdown para produção de relatórios é essencial para o estatístico pragmático. O RMarkdown possui diversas vantagens:
+
+1. **Simplicidade e foco**. Obriga o usuário a focar na análise e não na formatação do documento.
+1. **Versátil**. Pode ser utilizado para gerar documentos em LaTeX, Word, HTML e apresentações em beamer, pptx e HTML (de vários tipos). Pode ainda gerar sites, livros, dissertações de mestrado e até mesmo dashboards interativos.
+1. **Reprodutível**. O RMarkdown nada mais é que um arquivo de texto. Além disso, ele tenta te obrigar a fazer o documento mais autocontido possível. Assim, um documento .Rmd é fácil de compartilhar e de ser utilizado pelo receptor. Lembre-se, o receptor pode ser o futuro você! Vale enfatizar que a reprodutibilidade é considerada como um dos princípios fundamentais para a ciência. Então só de usar RMarkdown, você já está colaborando com a ciência :)
+1. **Eficiente**. É possível configurar e criar templates de análises para quaisquer tipos de aplicações e clientes. 
+
+Para detalhes sobre como utilizar o RMarkdown, [leia aqui](http://r4ds.had.co.nz/r-markdown.html) [e aqui](http://rmarkdown.rstudio.com/lesson-1.html).
+
+## GitHub
+
+O GitHub é uma plataforma online para compartilhar códigos. Projetos do GitHub são baseados no `git`, uma ferramenta de versionamento de software.
+
+Utilizar o GitHub é uma boa prática de organizar projetos pois é uma forma de manter os códigos organizados e atualizados na web, sem o perigo de perder tudo acidentalmente. Esse site também é essencial para projetos colaborativos, pois aumenta a produtividade e permite que pessoas de todo lugar ajudem nos projetos. O `tidyverse` só é o que é hoje por conta do *social coding*.
+
+Para detalhes, faça o [data science toolbox](https://www.coursera.org/learn/data-scientists-tools).
+
+## Pipe
+
+O operador *pipe* foi uma das grandes revoluções recentes do R, tornando a leitura de códigos mais lógica, fácil e compreensível. Este operador foi introduzido por Stefan Milton Bache no pacote `magrittr` e já existem diversos pacotes construidos para facilitar a sua utilização.
+
+Basicamente, o operador `%>%` usa o resultado do seu lado esquerdo como primeiro argumento da função do lado direito. Só isso!
+
+Para usar o operador `%>%`, primeiramente instale o pacote `magrittr`.
+
+```{r eval=FALSE}
+install.packages("magrittr")
+```
+
+e carregá-lo com a função `library()`
+
+```{r warning=FALSE, message=FALSE}
+library(magrittr)
+```
+
+Feito isso, vamos testar o operador calculando a raiz quadrada da soma de alguns números.
+
+```{r}
+x <- c(1, 2, 3, 4)
+x %>% sum %>% sqrt
+```
+
+O caminho que o código acima seguiu foi enviar o objeto `x` como argumento da função `sum()` e, em seguida, enviar a saida da expressão `sum(x)` como argumento da função `sqrt()`. Observe que não é necessário colocar os parênteses após o nome das funções.
+
+Se escrevermos esse cálculo na forma usual, temos o seguinte código:
+
+```{r}
+sqrt(sum(x))
+```
+
+A princípio, a utilização do `%>%` não parece trazer grandes vantagens, pois a expressão `sqrt(sum(x))` é facilmente compreendida. No entanto, se tivermos um grande número de funções aninhadas, a utilização do `pipe` transforma um código confuso e difícil de ser lido em algo simples e intuitivo. Como exemplo, imagine que você precise escrever uma receita de um bolo usando o R, e cada passo da receita é uma função:
+
+```{r, eval=FALSE}
+esfrie(asse(coloque(bata(acrescente(recipiente(rep("farinha", 2), "água", "fermento", "leite", "óleo"), "farinha", até = "macio"), duração = "3min"), lugar = "forma", tipo = "grande", untada = T), duração = "50min"), "geladeira", "20min")
+```
+
+Tente entender o que é preciso fazer. Nada fácil, correto? Agora escrevemos usando o operador `%>%`:
+
+```{r, eval=FALSE}
+recipiente(rep("farinha", 2), "água", "fermento", "leite", "óleo") %>%
+  acrescente("farinha", até = "macio") %>%
+  bata(duração = "3min") %>%
+  coloque(lugar = "forma", tipo = "grande", untada = T) %>%
+  asse(duração = "50min") %>%
+  esfrie("geladeira", "20min")
+```
+
+Agora o código realmente parece uma receita de bolo.
+
+Para mais informações sobre o `pipe` e exemplos de utilização, visite a página [Ceci n'est pas un pipe](http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html).
+
+<!--chapter:end:01-setup.Rmd-->
+
+# Análise exploratória: inscritos no curso {#inscritos}
+
+```{r echo=FALSE}
+# suppressMessages(read_csv('data/lista.csv')) %>% 
+#   filter(!str_detect(`Nome Completo:`, 'Trecenti')) %>% 
+#   select(-`RG:`, -`Nome Completo:`, -`E-mail:`) %>% 
+#   write_csv('data/lista_anon.csv')
+```
+
+```{r setup, message=FALSE, warning=FALSE}
+library(magrittr)
+library(tidyverse)
+library(stringr)
+library(lubridate)
+library(forcats)
+```
+
+## Objetivos
+
+- Verificar a bagagem dos alunos.
+- Verificar se há concentração de inscritos da graduação.
+- Verificar se há diferenças entre a turma do CEC e do Jacy.
+
+## Base de dados
+
+```{r echo=FALSE}
+renomear <- function(d) {
+  x <- names(d) %>%
+    tolower %>%
+    abjutils::rm_accent() %>%
+    str_replace_all('[[:space:]/\\-().:]+', '_') %>%
+    str_trim() %>% 
+    str_replace_all('_+', '_') %>% 
+    str_replace_all('_$', '')
+  names(d) <- x
+  d
+}
+
+re_usp <- regex('usp|universidade de são paulo|ime', ignore_case = TRUE)
+re_ufscar <- regex('ufscar|universidade de são carlos', ignore_case = TRUE)
+re_ime <- regex('ime', ignore_case = TRUE)
+re_unip <- regex('unip', ignore_case = TRUE)
+```
+
+```{r message=FALSE, warning=FALSE}
+d_alunos <- read_csv('data/lista_anon.csv')
+glimpse(d_alunos)
+```
+
+## Data tidying
+
+```{r message=FALSE, warning=FALSE}
+d_alunos %<>% 
+  mutate(Timestamp = mdy_hms(Timestamp)) %>% 
+  rownames_to_column('id_pessoa') %>% 
+  mutate(cec = id_pessoa %in% as.character(1:45)) %>% 
+  gather(pergunta, resposta, matches('^[0-9]')) %>% 
+  renomear() %>% 
+  spread(pergunta, resposta) %>% 
+  mutate(uni = with(., case_when(
+    str_detect(universidade, re_usp) ~ 'USP',
+    str_detect(universidade, re_ufscar) ~ 'UFSCar',
+    str_detect(universidade, re_unip) ~ 'UNIP',
+    TRUE ~ 'Outra'
+  ))) %>% 
+  mutate(esc = with(., case_when(
+    str_detect(estou_no_a, 'raduado|formado|Mestrado|Pós') ~ 'Formado / Pós',
+    str_detect(estou_no_a, 'Graduação') ~ 'Graduação',
+    TRUE ~ 'Outra'
+  ))) %>% 
+  mutate(ime = str_detect(universidade, re_ime),
+         cec = if_else(cec, 'CEC', 'Jacy'))
+```
+
+## Alguns gráficos
+
+Volume de inscrições no tempo
+
+```{r, fig.width=9, fig.height=3}
+d_alunos %>% 
+  arrange(timestamp) %>% 
+  mutate(um = 1, inscricoes = cumsum(um)) %>% 
+  ggplot(aes(x = timestamp, y = inscricoes, colour = cec)) +
+  geom_step() +
+  geom_hline(yintercept = 45, colour = 'red', linetype = 2) +
+  scale_x_datetime(breaks = scales::date_breaks('1 day'), 
+                   labels = scales::date_format('%b %d')) +
+  scale_y_continuous(breaks = 0:4 * 25, limits = c(0, 100)) +
+  theme_bw(14) +
+  xlab('Data') +
+  ylab('Volume de inscrições')
+```
+
+Escolaridade dos inscritos
+
+```{r fig.width=7, fig.height=3}
+d_alunos %>% 
+  replace_na(list(esc = 'Outra')) %>% 
+  mutate(esc = fct_infreq(esc)) %>% 
+  ggplot(aes(x = esc, fill = cec)) +
+  geom_bar(position = 'dodge') +
+  theme_bw(14) +
+  xlab('') +
+  ylab('Quantidade de inscritos')
+```
+
+Perguntas 1 e 3: sobre utilização do R.
+
+```{r fig.width=9, fig.height=9}
+d_alunos %>% 
+  gather(questao, resposta, matches('^[13]')) %>% 
+  replace_na(list(resposta = 'Não.')) %>% 
+  count(cec, questao, resposta) %>% 
+  mutate(prop = n / sum(n)) %>% 
+  ggplot(aes(x = str_wrap(resposta, 20), fill = cec, y = prop)) +
+  geom_bar(position = 'dodge', stat = 'identity') +
+  facet_wrap(~questao, scales = 'free_x', ncol = 1) +
+  scale_y_continuous(labels = scales::percent) +
+  geom_text(aes(label = scales::percent(prop), group = cec), 
+            position = position_dodge(.9), vjust = -.2) +
+  theme_bw(14) +
+  theme(strip.background = element_blank()) +
+  xlab('') +
+  ylab('Proporção de inscritos')
+```
+
+Pergunta 2: sobre conhecimento em outras linguagens. Não soma 100%!
+
+```{r fig.width=9}
+d_alunos %>% 
+  gather(questao, resposta, matches('^[2]')) %>% 
+  replace_na(list(resposta = 'Nenhuma')) %>% 
+  mutate(ling = str_split(resposta, '\\., ')) %>% 
+  unnest(ling) %>% 
+  mutate(ling = str_replace(ling, '\\.$', '')) %>%
+  group_by(cec) %>% 
+  mutate(ntot = n_distinct(id_pessoa)) %>% 
+  group_by(cec, ling) %>% 
+  summarise(n = n_distinct(id_pessoa), ntot = first(ntot)) %>% 
+  mutate(prop = n / ntot) %>% 
+  mutate(ling = str_wrap(ling, 20) %>% fct_reorder(prop, .desc = TRUE)) %>%
+  ggplot(aes(x = ling, fill = cec, y = prop)) +
+  geom_bar(position = 'dodge', stat = 'identity') +
+  scale_y_continuous(labels = scales::percent, limits = c(0, .7)) +
+  geom_text(aes(label = scales::percent(prop), group = cec), 
+            position = position_dodge(.9), vjust = -.2) +
+  theme_bw(14) +
+  xlab('Linguagem de programação') +
+  ylab('Proporção de inscritos')
+```
+
+<!-- ---------------------------------------------------------------------- -->
+
+<!--chapter:end:02-inscritos.Rmd-->
+
+# Trabalhando com vetores especiais
+
+<!-- ---------------------------------------------------------------------- -->
+
+## Pacote `lubridate` para trabalhar com datas
+
+```{r, warning=FALSE, message=FALSE}
+library(magrittr)
+library(lubridate)
+```
+
+Originalmente, o `R` é bastante ruim para trabalhar com datas, o que causa frustração e perda de tempo nas análises. O pacote `lubridate` foi criado para simplificar ao máximo a leitura de datas e extração de informações dessas datas.
+
+A função mais importante para leitura de dados no `lubridate` é a `ymd`. Essa função serve para ler qualquer data de uma `string` no formato `YYYY-MM-DD`. Essa função é útil pois funciona com qualquer separador entre os elementos da data e também porque temos uma função para cada formato (`mdy`, `dmy`, `dym`, `myd`, `ydm`). 
+
+**Exemplo**: dia-ano-mês
+
+```{r, warning=FALSE, message=FALSE}
+d1 <- '04/15/06'
+dym(d1)
+```
+
+**Exemplo**: ano-mês-dia
+
+```{r}
+d2 <- '2015-01-02'
+ymd(d2)
+```
+
+Outras funções importantes
+
+- `ymd_hms`: lê datas e horários, generalizando `ymd`. **Exemplo**:
+
+```{r}
+d3 <- '07022016 10:11:47'
+mdy_hms(d3)
+```
+
+Observe que as classes são diferentes:
+
+```{r}
+list(ymd(d2), mdy_hms(d3)) %>% lapply(class)
+```
+
+- `year`, `month`, `day`, `quarter`, `weekday`, `week`: extraem componentes da data.
+- `years`, `months`, `days`: adicionam tempos a uma data, ajudando a criar vetores de datas. Por exemplo
+
+```{r, warning=FALSE, message=FALSE}
+ymd('2015-01-01') + months(0:11)
+```
+
+- `floor_date` e `ceiling_date`: arredonda datas para uma unidade de interesse. Útil para agregar dados diários por semana, mês, trimestre etc.
+
+Mais informações: ver [aqui](https://cran.r-project.org/web/packages/lubridate/vignettes/lubridate.html) e [aqui](https://www.jstatsoft.org/index.php/jss/article/view/v040i03/v40i03.pdf).
+
+### Exercício
+
+(...)
+
+<!-- ---------------------------------------------------------------------- -->
+
+## Pacote `stringr` para trabalhar com textos
+
+O R básico não tem uma sintaxe consistente para trabalhar com textos. O pacote `stringr` ajuda a realizar todas as tarefas básicas de manipulação de texto, exigindo que o usuário estude apenas uma sintaxe. O `stringr` também é construído sobre a [biblioteca ICU](http://site.icu-project.org/), implementada em `C` e `C++`, apresentando resultados rápidos e confiáveis.
+
+As regras básicas do pacote são:
+
+- As funções de manipulação de texto começam com `str_`. Caso esqueça o nome de uma função, basta digitar `stringr::str_` e apertar `TAB` para ver quais são as opções.
+- O primeiro argumento da função é sempre uma `string`.
+
+Antes de listar as funções, precisamos estudar o básico de expressões regulares.
+
+### Expressões regulares
+
+Expressão regular ou *regex* é uma sequência concisa de caracteres que representa várias strings. Entender o básico de expressões regulares é indispensável para trabalhar com textos.
+
+Vamos estudar expressões regulares através de exemplos e com a função `str_detect()`. Essa função retorna `TRUE` se uma string atende à uma expressão regular e `FALSE` em caso contrário.
+
+A tabela abaixo mostra a aplicação de seis `regex` a seis strings distintas.
+
+```{r}
+library(stringr)
+testes <- c('ban', 'banana', 'abandonado', 'pranab anderson', 'BANANA', 'ele levou ban')
+
+expressoes <- list(
+  'ban', # reconhece tudo que tenha "ban", mas não ignora case
+  'BAN', # reconhece tudo que tenha "BAN", mas não ignora case
+  regex('ban', ignore_case = TRUE), # reconhece tudo que tenha "ban", ignorando case
+  'ban$', # reconhece apenas o que termina exatamente em "ban"
+  '^ban', # reconhece apenas o que começa exatamente com "ban"
+  'b ?an' # reconhece tudo que tenha "ban", com ou sem espaço entre o "b" e o "a"
+)
+```
+
+```{r echo=FALSE}
+purrr::map(testes, ~str_detect(testes, .x)) %>% 
+  {do.call(rbind, .)} %>% 
+  as.data.frame() %>% 
+  setNames(testes) %>% 
+  dplyr::mutate(regex = expressoes) %>% 
+  dplyr::select(regex, dplyr::everything()) %>% 
+  knitr::kable()
+```
+
+#### Quantificadores
+
+Os caracteres `+`, `*` e `{x,y}` indicam quantas vezes um padrão se repete:
+
+- `ey+` significa `e` e depois `y` "**uma vez** ou mais". Por exemplo, reconhece `hey`, `heyy`, `a eyyy`, mas não reconhece `e`, `y` nem `yy`.
+- `ey*` significa "**zero vezes** ou mais". Por exemplo, reconhece `hey`, `heyy`, `a eyyy` e `e`, mas não reconhece `y` nem `yy`.
+- `ey{3}` significa "exatamente três vezes". Por exemplo, reconhece `eyyy` e `eyyyy`, mas não reconhece `eyy`.
+- `ey{1,3}` significa "entre uma e três vezes".
+
+Para aplicar um quantificador a um conjunto de caracteres, use parênteses. Por exemplo, `(ey )+` reconhece `ey ey `.
+
+#### Conjuntos
+
+Colocando caracteres dentro de `[]`, reconhecemos quaisquer caracteres desse conjunto. Alguns exemplos práticos:
+
+- `[Cc]asa` para reconhecer "casa" em maiúsculo ou minúsculo.
+- `[0-9]` para reconhecer somente números. O mesmo vale para letras `[a-z]`, `[A-Z]`, `[a-zA-Z]` etc.
+- O símbolo `^` dentro do colchete significa negação. Por exemplo, `[^0-9]` significa pegar tudo o que não é número.
+- O símbolo `.` fora do colchete indica "qualquer caractere", mas dentro do colchete é apenas ponto.
+- Use `[[:space:]]+` para reconhecer espaços e `[[:punct:]]+` para reconhecer pontuações.
+
+#### Miscelânea
+
+- Use `abjutils::rm_accent()` para retirar os acentos de um texto.
+- Use `|` para opções, por exemplo `desfavor|desprov` reconhece tanto "desfavorável" quanto "desprovido"
+- `\n` pula linha, `\f` é final da página, `\t` é tab. Use `\` para transformar caracteres especiais em literais.
+- `tolower()` e `toupper()` para mudar o case de uma string. 
+
+A lista de possibilidades com expressões regulares é extensa. 
+Um bom lugar para testar o funcionamento de expressões regulares é o [regex101](https://regex101.com/).
+
+### Funções do `stringr`
+
+- `str_detect()` retorna `TRUE` se a regex é compatível com a string e `FALSE` caso contrário
+
+- `str_lengh()` retorna o comprimento de uma string.
+
+```{r}
+str_length('hye')
+```
+
+- `str_trim()` retira espaços e quebras de linha/tabs no início ou final de string.
+
+```{r}
+string <- '\nessa      string é muito suja       \n'
+str_trim(string)
+```
+
+- `str_replace()` e `str_replace_all()` substituem um padrão (ou todos) encontrado para um outro padrão
+
+```{r}
+string <- 'heyyy ui yy'
+str_replace(string, 'y', 'x')
+str_replace(string, 'y+', 'x')
+str_replace_all(string, 'y', 'x')
+str_replace_all('string     com    muitos espaços', ' +', ' ') # tirar espaços extras
+```
+
+- `str_match()` e `str_match_all()` extrai pedaços da string identificados pela regex. Caso queira extrair somente a parte identificada, use parênteses.
+
+```{r}
+frases <- c('a roupa do rei', 'de roma', 'o rato roeu')
+str_match(frases, 'roe')
+str_match_all(frases, 'ro')
+str_match(frases, 'o (ro)')
+```
+
+- `str_split()` separa uma string em várias de acordo com um separador.
+
+```{r}
+string <- 'eu sei, usar virgulas, de forma, perfeita'
+
+str_split(string, ', ')
+str_split(string, ', ', simplify = TRUE)
+```
+
+- `str_split_fixed()` faz o mesmo que `str_split()`, mas separa apenas `n` vezes
+
+```{r}
+str_split_fixed(string, ', ', 3)
+str_split_fixed(string, ', ', 4) # igual a str_split(string, simplify = TRUE)
+```
+
+- `str_sub()` extrai uma parte da string de acordo com os índices.
+
+```{r}
+string <- 'quero pegar só uma parte disso'
+str_sub(string, 13, 14)
+str_sub(string, -5, -1) # usar números negativos para voltar do final da string
+
+indices <- str_locate(string, 'parte')
+indices
+str_sub(string, indices) # pode ser útil usar com str_locate.
+```
+
+- `str_subset()` retorna somente as strings compatíveis com a regex.
+
+```{r}
+frases <- c('a roupa do rei', 'de roma', 'o rato roeu')
+str_subset(frases, 'd[eo]')
+```
+
+### Exemplo
+
+### Exercícios
+
+1. Considere o seguinte texto
+
+```{r}
+txt <- "A função mais importante para leitura de dados no `lubridate` é a `ymd`. Essa função serve para ler qualquer data de uma `string` no formato `YYYY-MM-DD`. Essa função é útil pois funciona com qualquer separador entre os elementos da data e também porque temos uma função para cada formato (`mdy`, `dmy`, `dym`, `myd`, `ydm`)."
+```
+
+Extraia todas as combinações da função `ymd`, sem repetições.
+
+2. Considere os textos abaixo
+
+```{r}
+txts <- c(
+  'o produto é muito bom',
+  'o produto não é bom',
+  'o produto não é muito bom',
+  'o produto não é ruim',
+  'o produto não é não bom'
+)
+```
+
+Crie uma regra para identificar se o texto refere-se a um feedback positivo ou negativo sobre o produto (considera não bom = ruim e vice-versa). Retorne um vetor lógico que vale `TRUE` se o feedback é positivo e `FALSE` caso contrário.
+
+<!-- ---------------------------------------------------------------------- -->
+
+## Pacote `forcats` para trabalhar com factors
+
+Factors sempre foram uma pedra no sapato para usuários de R. Esses objetos são estranhos pois parecem textos, mas na verdade são inteiros.
+
+```{r}
+x <- factor(c('a', 'b', 'c'))
+x
+typeof(x)
+```
+
+Assim, eles podem levar a erros do tipo:
+
+```{r}
+x <- factor(c('6', '5', '4'))
+as.numeric(x)
+```
+
+O problema é que, historicamente, esses objetos eram utilizados por diversos objetos do R. Em particular, o `data.frame` até hoje utiliza fatores como padrão. Felizmente, o `tidyverse` nos livra desse mal e permite que utilizemos fatores somente quando eles são realmente úteis.
+
+Mas quando fatores são úteis? A resposta para essa pergunta vem da própria estatística: temos dois tipos de variáveis categóricas existentes, a nominal e a ordinal. Uma variável nominal pode ser completamente representada por um vetor de strings. Mas isso não vale para variáveis ordinais, pois um vetor de strings só pode ser ordenado alfabeticamente, o que em muitos casos não é suficiente. O `factor` permite que associemos um inteiro para cada valor de uma string, nos dando a possibilidade de ordená-las da forma que quisermos.
+
+O pacote `forcats` (`for` - para, `cats` - categóricas, não gatos) serve justamente para reordenar fatores de diversas formas. Isso é especialmente útil para visualização, pois muitas vezes queremos ordenar coisas de acordo com alguma regra. 
+
+Por exemplo, considere o seguinte gráfico de barras (veremos sobre o ggplot na próxima vez).
+
+```{r, out.width = '50%', fig.align='center'}
+set.seed(123)
+labs <- c('banana', 'maçã', 'laranja', 'limão', 'pêssego')[rbinom(1000, 4, .2) + 1]
+labs %>% ggplot2::qplot()
+```
+
+Note que o eixo `x` está ordenado alfabeticamente. Como a ordem das frutas não importa (pois é uma variável nominal), faz mais sentido ordenarmos as barras de acordo com a quantidade de frutas. Isso é feito com a função `fct_infreq`:
+
+```{r, out.width = '50%', fig.align='center'}
+library(forcats)
+labs %>% fct_infreq() %>% ggplot2::qplot()
+```
+
+Outra importante função do `forcats` possibilita agrupar fatores de forma eficiente:
+
+```{r, out.width = '50%', fig.align='center'}
+labs %>% 
+  fct_collapse(cítrica = c('laranja', 'limão')) %>% 
+  fct_infreq() %>% 
+  ggplot2::qplot()
+```
+
+Outra forma comum de agrupar fatores é agrupar em "outros" as categorias que aparecem poucas vezes na base de dados. Para isso, utilizamos `fct_lump`:
+
+```{r, fig.align = "default", out.width = '33%', fig.show='hold'}
+labs %>% fct_count()
+# agrupa todas desde que "outro" continue a menor categoria
+labs %>% fct_lump(other_level = 'outros') %>% ggplot2::qplot()
+# 10% menores
+labs %>% fct_lump(prop = .10, other_level = 'outros') %>% ggplot2::qplot() 
+# mantém os n maiores
+labs %>% fct_lump(n = 1, other_level = 'outros') %>% ggplot2::qplot()
+```
+
+Finalmente, uma função útil para produção de gráficos é a `fct_reorder`, que permite utilizar uma variável auxiliar (possivelmente fazendo sumarizações) para ordenar o fator. 
+
+### Exercício
+
+A função `fct_reorder` foi utilizada na análise dos inscritos. Descubra como ela foi utilizada e qual seu efeito no gráfico.
+
+
+<!--chapter:end:03-vetores.Rmd-->
+
+# Visualização de dados
+
+## Com `ggplot2`
+
+O `ggplot2` é um pacote do R voltado para a criação de gráficos estatísticos. Ele é baseado na Gramática dos Gráficos (*grammar of graphics*, em inglês), criado por Leland Wilkinson, que é uma resposta para a pergunta: o que é um gráfico estatístico? Resumidamente, a gramática diz que um gráfico estatístico é um mapeamento dos dados a partir de atributos estéticos (cores, formas, tamanho) em formas geométricas (pontos, linhas, barras).
+
+Para mais informações sobre a Gramática dos Gráficos, você pode consultar o livro [*The Grammar of graphics*](http://www.springer.com/statistics/computational+statistics/book/978-0-387-24544-7), escrito pelo Leland Wilkinson, ou o livro [ggplot2: elegant graphics for data analysis](http://ggplot2.org/book/), do Hadley Wickham. Um [pdf do livro](http://moderngraphics11.pbworks.com/f/ggplot2-Book09hWickham.pdf) também está disponível.
+
+<!-- ---------------------------------------------------------------------- -->
+Parei aqui. Daqui pra baixo está desatualizado!
+
+### Construindo gráficos
+
+A seguir, vamos discutir os aspcetos básicos para a construção de gráficos com o pacote `ggplot2`. Para isso, utilizaremos o banco de dados contido no objeto `mtcars`. Para visualizar as primeiras linhas deste banco, utilize o comando:
+
+```{r}
+head(mtcars)
+```
+
+### As camadas de um gráfico
+
+No `ggplot2`, os gráficos são construídos camada por camada (ou, *layers*, em inglês), sendo que a primeira delas é dada pela função `ggplot` (não tem o "2"). Cada camada representa um tipo de mapeamento ou personalização do gráfico. O código abaixo é um exemplo de um gráfico bem simples, construído a partir das duas principais camadas. 
+
+```{r aula05chunk03, message=FALSE, warning=FALSE}
+library(ggplot2)
+ggplot(data = mtcars, aes(x = disp, y = mpg)) + 
+  geom_point()
+```
+
+Observe que o primeiro argumento da função `ggplot` é um data frame. A função `aes()` descreve como as variáveis são mapeadas em aspectos visuais de formas geométricas definidas pelos *geoms*. Aqui, essas formas geométricas são pontos, selecionados pela função `geom_point()`, gerando, assim, um gráfico de dispersão. A combinação dessas duas camadas define o tipo de gráfico que você deseja construir.
+
+#### Aesthetics
+
+A primeira camada de um gráfico deve indicar a relação entre os dados e cada aspecto visual do gráfico, como qual variável será representada no eixo x, qual será representada no eixo y, a cor e o tamanho dos componentes geométricos etc. Os aspectos que podem ou devem ser mapeados depende do tipo de gráfico que você deseja fazer.
+
+No exemplo acima, atribuímos aspectos de posição: ao eixo y mapeamos a variável `mpg` (milhas por galão) e ao eixo x a variável `disp` (cilindradas). Outro aspecto que pode ser mapeado nesse gráfico é a cor dos pontos
+
+
+```{r aula05chunk04}
+ggplot(data = mtcars, aes(x = disp, y = mpg, colour = as.factor(am))) + 
+  geom_point()
+```
+
+Agora, a variável `am` (tipo de transmissão) foi mapeada à cor dos pontos, sendo que pontos vermelhos correspondem à transmissão automática (valor 0) e pontos azuis à transmissão manual (valor 1). Observe que inserimos a variável `am` como um fator, pois temos interesse apenas nos valores "0" e "1". No entanto, tambem podemos mapear uma variável contínua à cor dos pontos:
+
+```{r aula05chunk05}
+ggplot(mtcars, aes(x = disp, y = mpg, colour = cyl)) + 
+  geom_point()
+```
+
+Aqui, o número de cilindros, `cyl`, é representado pela tonalidade da cor azul.
+
+**Nota**: por *default*, a legenda é insirida no gráfico automaticamente.
+
+Também podemos mapear o tamanho dos pontos à uma variável de interesse:
+
+```{r aula05chunk06}
+ggplot(mtcars, aes(x = disp, y = mpg, colour = cyl, size = wt)) +
+  geom_point()
+```
+
+**Exercício**: pesquisar mais aspectos que podem ser alterados no gráfico de dispersão.
+
+#### Geoms
+
+Os *geoms* definem qual forma geométrica será utilizada para a visualização dos dados no gráfico. Como já vimos, a função `geom_point()` gera gráficos de dispersão transformando pares (x,y) em pontos. Veja a seguir outros *geoms* bastante utilizados:
+
+- geom_line: para retas definidas por pares (x,y)
+- geom_abline: para retas definidas por um intercepto e uma inclinação
+- geom_hline: para retas horizontais
+- geom_boxplot: para boxplots
+- geom_histogram: para histogramas
+- geom_density: para densidades
+- geom_area: para áreas
+- geom_bar: para barras
+
+Veja a seguir como é fácil gerar diversos gráficos diferentes utilizando a mesma estrutura do gráfico de dispersão acima:
+
+```{r aula05chunk07}
+ggplot(mtcars, aes(x = as.factor(cyl), y = mpg)) + 
+  geom_boxplot()
+```
+
+```{r aula05chunk08}
+ggplot(mtcars, aes(x = mpg)) + 
+  geom_histogram()
+```
+
+```{r aula05chunk09}
+ggplot(mtcars, aes(x = as.factor(cyl))) + 
+  geom_bar()
+```
+
+Para fazer um boxplot para cada grupo, precisamos passar para o aspecto x do gráfico uma variável do tipo fator. 
+### Personalizando os gráficos
+
+#### Cores
+
+O aspecto colour do boxplot, muda a cor do contorno. Para mudar o preenchimento, basta usar o `fill`.
+
+```{r aula05chunk10, fig.height=3, fig.width=5}
+ggplot(mtcars, aes(x = as.factor(cyl), y = mpg, colour = as.factor(cyl))) + 
+  geom_boxplot()
+```
+
+
+```{r aula05chunk11, fig.height=3, fig.width=5}
+ggplot(mtcars, aes(x = as.factor(cyl), y = mpg, fill = as.factor(cyl))) + geom_boxplot()
+```
+
+Você pode também mudar a cor dos objetos sem mapeá-la a uma variável. Para isso, observe que os aspectos `colour` e `fill` são especificados fora do `aes()`.
+
+```{r aula05chunk12, fig.height=3, fig.width=5}
+ggplot(mtcars, aes(x = as.factor(cyl), y = mpg)) + 
+  geom_boxplot(color = "red", fill = "pink")
+```
+
+#### Eixos
+
+Para alterar os labels dos eixos acrescentamos as funções `xlab()` ou `ylab()`.
+
+```{r aula05chunk13, fig.height=3, fig.width=5}
+ggplot(mtcars, aes(x = mpg)) + 
+  geom_histogram() +
+  xlab("Milhas por galão") +
+  ylab("Frequência")
+```
+
+Para alterar os limites dos gráficos usamos as funções `xlim()` e `ylim()`.
+
+```{r aula05chunk14, fig.height=3, fig.width=5}
+ggplot(mtcars, aes(x = mpg)) + 
+  geom_histogram() +
+  xlab("Milhas por galão") +
+  ylab("Frequência") +
+  xlim(c(0, 40)) +
+  ylim(c(0,8))
+```
+
+#### Legendas
+
+A legenda de um gráfico pode ser facilmente personalizada.
+
+Para trocar o *label* da leganda:
+
+```{r aula05chunk15, fig.height=3, fig.width=5}
+ggplot(mtcars, aes(x = as.factor(cyl), fill = as.factor(cyl))) + 
+  geom_bar() +
+  labs(fill = "cyl")
+```
+
+Para trocar a posição da legenda:
+
+```{r aula05chunk16, fig.height=3, fig.width=5}
+ggplot(mtcars, aes(x = as.factor(cyl), fill = as.factor(cyl))) + 
+  geom_bar() +
+  labs(fill = "cyl") +
+  theme(legend.position="top")
+```
+
+Para retirar a legenda:
+
+```{r aula05chunk17, fig.height=3, fig.width=5}
+ggplot(mtcars, aes(x = as.factor(cyl), fill = as.factor(cyl))) + 
+  geom_bar() +
+  guides(fill=FALSE)
+```
+
+Veja mais opções de personalização [aqui!](http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/)
+
+#### Facets
+
+Outra funcionalidade muito importante do ggplot é o uso de *facets*.
+
+```{r aula05chunk18}
+ggplot(mtcars, aes(x = mpg, y = disp, colour = as.factor(cyl))) + 
+  geom_point() + 
+  facet_grid(am~.)
+```
+
+Podemos colocar os graficos lado a lado também:
+
+```{r aula05chunk19}
+ggplot(mtcars, aes(x = mpg, y = disp, colour = as.factor(cyl))) +
+  geom_point() + 
+  facet_grid(.~am)
+```
+
+
+<!--chapter:end:04-ggplot2.Rmd-->
+
+# Transformação de dados
+
+A transformação de dados é uma tarefa usualmente dolorosa e demorada, podendo tomar a maior parte do tempo da análise. No entanto, como nosso interesse geralmente é na modelagem dos dados, essa tarefa é muitas vezes negligenciada.
+
+> "(...) The fact that data science exists as a field is a colossal failure of statistics. To me, [what I do] is what statistics is all about. It is gaining insight from data using modelling and visualization. Data munging and manipulation is hard and statistics has just said that’s not our domain."
+> 
+> Hadley Wickham
+
+## Pacotes `dplyr` e `tidyr`
+
+O `dplyr` é um dos pacotes mais úteis para realizar manipulação de dados, e procura aliar simplicidade e eficiência de uma forma bastante elegante. Os scripts em `R` que fazem uso inteligente dos verbos `dplyr` e as facilidades do operador _pipe_ tendem a ficar mais legíveis e organizados, sem perder velocidade de execução.
+
+Por ser um pacote que se propõe a realizar um dos trabalhos mais árduos da análise estatística, e por atingir esse objetivo de forma elegante, eficaz e eficiente, o `dplyr` pode ser considerado  como uma revolução no `R`.
+
+### Trabalhando com `tibble`s
+
+A `tibble` nada mais é do que um `data.frame`, mas com um método de impressão mais adequado. Outras diferenças podem ser estudadas [neste link](http://r4ds.had.co.nz/tibbles.html).
+
+Vamos assumir que temos a seguinte base de dados:
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(stringr)
+d_cjsg <- readRDS('data/d_cjsg.rds')
+```
+
+```{r}
+d_cjsg
+```
+
+### As cinco funções principais do `dplyr`
+
+- `filter`
+- `mutate`
+- `select`
+- `arrange`
+- `summarise`
+
+### Características
+
+- O _input_  é sempre uma `tibble`, e o _output_  é sempre um `tibble`.
+- No primeiro argumento colocamos o `tibble`, e nos outros argumentos colocamo o que queremos fazer.
+- A utilização é facilitada com o emprego do operador `%>%`
+
+### Vantagens
+
+- Utiliza `C` e `C++` por trás da maioria das funções, o que geralmente torna o código mais eficiente.
+- Pode trabalhar com diferentes fontes de dados, como bases relacionais (SQL) e `data.table`.
+
+### `select`
+
+- Utilizar `starts_with(x)`, `contains(x)`, `matches(x)`, `one_of(x)`, etc.
+- Possível colocar nomes, índices, e intervalos de variáveis com `:`.
+
+```{r}
+d_cjsg %>% 
+  select(id, cd_acordao, comarca, relator = relatora)
+```
+
+```{r}
+d_cjsg %>% 
+  select(cd_acordao:comarca, classe_assunto)
+```
+
+```{r}
+d_cjsg %>% 
+  select(n_processo, starts_with('data_'))
+```
+
+### `filter`
+
+- Parecido com `subset`.
+- Condições separadas por vírgulas é o mesmo que separar por `&`.
+
+```{r}
+d_cjsg %>% 
+  select(id, cd_acordao, comarca, relator = relatora) %>% 
+  filter(comarca == 'São Paulo')
+```
+
+```{r}
+library(lubridate)
+d_cjsg %>% 
+  select(id, cd_acordao, comarca, data_julgamento, relator = relatora) %>% 
+  filter(comarca %in% c('Campinas', 'Sorocaba') &
+         (day(dmy(data_julgamento)) >= 29 | day(dmy(data_julgamento)) < 25))
+
+d_cjsg %>% 
+  select(comarca) %>% 
+  filter(str_detect(comarca, '^[gG]'))
+```
+
+### `mutate`
+
+- Parecido com `transform`, mas aceita várias novas colunas iterativamente.
+- Novas variáveis devem ter o mesmo `length` que o `nrow` do bd oridinal ou `1`.
+
+```{r}
+library(stringr)
+d_cjsg %>% 
+  select(id, n_processo, data_julgamento) %>% 
+  mutate(ano_julgamento = year(dmy(data_julgamento)),
+         ano_proc = str_sub(n_processo, 12, 15),
+         ano_proc = as.numeric(ano_proc),
+         tempo_anos = ano_julgamento - ano_proc)
+```
+
+### `arrange`
+
+- Simplesmente ordena de acordo com as opções.
+- Utilizar `desc` para ordem decrescente.
+
+```{r}
+library(stringr)
+d_cjsg %>% 
+  select(id, n_processo, data_julgamento) %>% 
+  mutate(ano_julgamento = year(dmy(data_julgamento)),
+         ano_proc = str_sub(n_processo, 12, 15),
+         ano_proc = as.numeric(ano_proc)) %>% 
+  mutate(tempo_anos = ano_julgamento - ano_proc) %>% 
+  arrange(desc(tempo_anos))
+```
+
+### `summarise`
+
+- Retorna um vetor de tamanho `1` a partir de uma conta com as variáveis.
+- Geralmente é utilizado em conjunto com `group_by`.
+- Algumas funções importantes: `n()`, `n_distinct()`.
+
+```{r}
+d_cjsg %>% 
+  select(id, n_processo, comarca, data_julgamento, orgao_julgador) %>% 
+  mutate(ano_julgamento = year(dmy(data_julgamento)),
+         ano_proc = str_sub(n_processo, 12, 15),
+         ano_proc = as.numeric(ano_proc)) %>% 
+  mutate(tempo_anos = ano_julgamento - ano_proc) %>% 
+  arrange(desc(tempo_anos)) %>% 
+  group_by(comarca, orgao_julgador) %>% 
+  summarise(n = n(),
+            media_anos = mean(tempo_anos),
+            min_anos = min(tempo_anos),
+            max_anos = max(tempo_anos)) %>% 
+  filter(n > 5) %>% 
+  arrange(desc(media_anos))
+```
+
+```{r}
+d_cjsg %>% 
+  count(relatora, sort = TRUE) %>% 
+  mutate(prop = n / sum(n), prop = scales::percent(prop))
+```
+
+### `gather`
+
+- "Empilha" o banco de dados
+
+```{r warning=FALSE, message=FALSE}
+library(tidyr)
+d_cjsg %>% 
+  select(cd_acordao:data_registro) %>% 
+  gather(key, value, -cd_acordao) %>% 
+  arrange(cd_acordao)
+```
+
+### `spread`
+
+- "Joga" uma variável nas colunas
+- É essencialmente a função inversa de `gather`
+
+```{r}
+d_cjsg %>% 
+  distinct(cd_acordao, .keep_all = TRUE) %>% 
+  select(cd_acordao:data_registro) %>% 
+  gather(key, value, -cd_acordao) %>% 
+  spread(key, value)
+```
+
+### Funções auxiliares
+
+- `unite` junta duas ou mais colunas usando algum separador (`_`, por exemplo).
+- `separate` faz o inverso de `unite`, e uma coluna em várias usando um separador.
+
+```{r}
+d_cjsg %>% 
+  select(n_processo, classe_assunto) %>% 
+  separate(classe_assunto, c('classe', 'assunto'), sep = ' / ', 
+           extra = 'merge', fill = 'right') %>% 
+  count(assunto, sort = TRUE)
+```
+
+### Um pouco mais de transformação de dados
+
+- Para juntar tabelas, usar `inner_join`, `left_join`, `anti_join`, etc.
+- Para realizar operações mais gerais, usar `do`.
+- Para retirar duplicatas, utilizar `distinct`.
+
+
+<!--chapter:end:05-transform.Rmd-->
+
+# Modelos
+
+Você precisará dessas bibliotecas:
+
+```{r message=FALSE, warning=FALSE}
+library(magrittr)
+library(tidyverse)
+library(modelr)
+library(broom)
+library(caret)
+library(randomForest)
+library(httr)
+
+# talvez essas deem erro... nao sei
+library(tree)
+library(jpeg)
+```
+
+Se alguma delas não estiver instalada, rode `install.packages('pacote')`.
+
+## Recuperação de imagens
+
+Neste exemplo iremos comparar visualmente o desempenho de modelos de **regressão linear**, **árvores de decisão** e outros modelos em duas diferentes situações.
+
+Para isso, iremos mexer com imagens **.jpg**.
+
+### Imagens **.jpg**
+
+Antes de iniciarmos a brincadeira, vale uma breve introdução às imagens **.jpg**, pois elas formarão nossas `tibble`'s.
+
+Arquivos com extensão *.jpg* guardam 5 coordenadas que são suficientes para serem entendidas e desenhadas pelo computador:
+
+- `x` e `y` são as coordenadas cartesianas da imagem; e
+- `r`, `g` e `b` *red*, *green* e *blue*, respectivamente, que juntas formam cores.
+
+As cores que conhecemos podem ser compostas pela combinação dessas três cores. A intensidade de cada cor varia de 0 a 1.
+
+Para cada pixel no plano (x,y) existe uma cor associada. Assim, uma imagem pode ser representada por um banco de dados com 5 colunas: `x`, `y`, `r`, `g` e `b`.
+
+### Objetivo
+
+- Verificar qual modelo entre **regressão linear** e **árvores de decisão** é o mais adequado para recuperar a o componente azul da imagem **purple_wave.jpg**.
+
+- Verificar qual modelo entre **regressão linear** e **árvores de decisão** é o mais adequado para recuperar a o componente azul da imagem **xadrez_colorido.jpg**.
+
+### Preparação do Banco de dados
+
+Para construir nossos bancos de dados, vamos carregar as duas imagens abaixo.
+
+![purple_wave.jpg](http://curso-r.github.io/posts/assets/fig/purple_wave.jpg)
+
+![xadrez_colorido.jpg](http://curso-r.github.io/posts/assets/fig/xadrez_colorido.jpg)
+
+
+```{r}
+img_import <- function(link) {
+  # a) carrega uma imagem jpeg no R 
+  img <- link %>% 
+    httr::GET() %>% 
+    httr::content()
+  # b) transforma o array da imagem em data.frame com 
+  # infos de posicao (x,y) e cor (r,g,b) dimensões da imagem
+  img_dim <- dim(img)
+  img_tidy <- tibble(
+    x = rep(1:img_dim[2], each = img_dim[1]),
+    y = rep(img_dim[1]:1, img_dim[2]),
+    r = as.vector(img[,,1]),
+    g = as.vector(img[,,2]),
+    b = as.vector(img[,,3])
+  ) %>%
+    mutate(cor = rgb(r, g, b), id = 1:n())
+  img_tidy
+}
+```
+
+```{r}
+img_purple <- img_import('http://curso-r.github.io/posts/assets/fig/purple_wave.jpg')
+img_xadrez <- img_import('http://curso-r.github.io/posts/assets/fig/xadrez_colorido.jpg')
+
+img_purple
+```
+
+**Obs**: Função auxiliar para plotar imagens com `ggplot2`
+
+```{r}
+img_ggplot <- function(d) {
+  d %>% 
+    ggplot(aes(x = x, y = y)) +
+    coord_equal() +
+    geom_point(shape = 15, size = 1, colour = d$cor) +
+    guides(colour = FALSE) +
+    theme_void()
+}
+
+img_purple %>% img_ggplot
+```
+
+### Base de treino e base de teste
+
+Vamos dividir nossa `tibble` em duas partes: base de treino e base de teste.
+
+```{r}
+# para reprodução
+set.seed(1) 
+img_purple_part <- img_purple %>% 
+  resample_partition(c(test = .3, train = .7))
+```
+
+Veja como fica a **base de teste sem o azul** e como é o **azul original isolado**.
+
+```{r, fig.height=12, fig.width=8}
+img_purple %>% 
+  slice(img_purple_part$test$idx) %>% 
+  mutate(cor1 = rgb(r, g, 0), cor2 = rgb(0, 0, b)) %>% 
+  select(-cor) %>% 
+  gather(tipo_cor, cor, cor1, cor2) %>% 
+  img_ggplot() +
+  facet_wrap(~tipo_cor, ncol = 1)
+```
+
+Agora, vamos fingir que não temos a cor azul `b` da base de teste. A nossa tarefa é recuperar o azul da base de teste, a partir de um modelo construído somente com a base de treino.
+
+```{r}
+img_purple_train <- img_purple %>% 
+  slice(img_purple_part$test$idx)
+```
+
+```{r}
+img_purple_train %>% 
+  sample_n(500) %>% 
+  select(x:b) %>% 
+  GGally::ggpairs()
+```
+
+### Modelo linear
+
+$$
+E(Y|X) = f(X)
+$$
+
+Aparentemente `r` e `g` possuem uma boa correlação com `b`. Vamos ajustar um modelo linear para selecionar as variáveis.
+
+
+```{r}
+img_lm <- lm(b ~ r + g + x + y, 
+             data = img_purple_train)
+img_lm %>% augment
+```
+
+Alguns gráficos de diagnóstico
+
+```{r}
+img_lm %>% 
+  augment() %>% 
+  ggplot(aes(x = .fitted, y = .std.resid)) +
+  geom_point() +
+  geom_smooth()
+
+img_lm %>% 
+  augment() %>% 
+  ggplot(aes(x = .fitted, y = .std.resid)) +
+  geom_hex() + 
+  geom_smooth()
+
+img_lm %>% 
+  augment() %>% 
+  ggplot() +
+  geom_qq(aes(sample = .std.resid)) +
+  geom_abline(linetype = 2)
+
+img_lm %>% 
+  augment() %>% 
+  ggplot(aes(.hat, .cooksd)) +
+  geom_point()
+```
+
+
+
+Agora vamos plotar o resultado.
+
+```{r, fig.height=12, fig.width=8}
+img_purple_lm <- img_purple %>% 
+  slice(img_purple_part$test$idx) %>% 
+  add_predictions(img_lm, 'b_pred')
+
+img_purple_lm %>% 
+  mutate(b_pred = ifelse(b_pred < 0, 0, b_pred)) %>% # small hack!!!
+  mutate(cor_pred = rgb(r, g, b_pred)) %>% 
+  gather(tipo_cor, cor, cor, cor_pred) %>% 
+  img_ggplot() +
+  facet_wrap(~tipo_cor, ncol = 1)
+```
+
+Erro de predição:
+
+```{r}
+img_purple_lm %>% 
+  summarise(erro = sqrt(mean((b - b_pred) ^ 2)))
+```
+
+### Árvore de decisão
+
+Agora vamos ajustar um modelo de árvore de decisão!
+
+```{r}
+img_tree <- tree::tree(b ~ r + g + x + y, data = img_purple_train)
+plot(img_tree)
+text(img_tree)
+```
+
+```{r, fig.height=12, fig.width=8}
+img_purple_tree <- img_purple %>% 
+  slice(img_purple_part$test$idx) %>% 
+  add_predictions(img_tree, 'b_pred')
+
+img_purple_tree %>% 
+  mutate(b_pred = ifelse(b_pred < 0, 0, b_pred)) %>% # small hack!!!
+  mutate(cor_pred = rgb(r, g, b_pred)) %>% 
+  gather(tipo_cor, cor, cor, cor_pred) %>% 
+  img_ggplot() +
+  facet_wrap(~tipo_cor, ncol = 1)
+```
+
+Erro de predição:
+
+```{r}
+img_purple_tree %>% 
+  summarise(erro = sqrt(mean((b - b_pred) ^ 2)))
+```
+
+### Modelo aditivo generalizado (GAM)
+
+O GAM considera "smooths" no lugar de preditores lineares a partir de uma "spline".
+
+$$
+f(x_i) = \sum_j f_j(x_{ij})
+$$
+
+```{r}
+img_gam <- mgcv::gam(b ~ s(r) + s(g) + s(x) + s(y), data = img_purple_train)
+plot(img_gam)
+```
+
+Agora vamos plotar o resultado.
+
+```{r, fig.height=12, fig.width=8}
+img_purple_gam <- img_purple %>% 
+  slice(img_purple_part$test$idx) %>% 
+  add_predictions(img_gam, 'b_pred')
+
+img_purple_gam %>% 
+  mutate(b_pred = ifelse(b_pred < 0, 0, b_pred)) %>% # small hack!!!
+  mutate(cor_pred = rgb(r, g, b_pred)) %>% 
+  gather(tipo_cor, cor, cor, cor_pred) %>% 
+  img_ggplot() +
+  facet_wrap(~tipo_cor, ncol = 1)
+```
+
+Erro de predição:
+
+```{r}
+img_purple_gam %>% 
+  summarise(erro = sqrt(mean((b - b_pred) ^ 2)))
+```
+
+### Random Forest
+
+O modelo de florestas aleatórias é um dos modelos conhecidos como "caixinha preta", pois seus resultados não são facilmente interpretáveis. No modelo de árvores, podemos interpretar o gráfico facilmente. Na regressão linear, podemos interpretar os coeficientes.
+
+```{r}
+# img_rf <- randomForest(b ~ r + g + x + y, data = img_purple_train)
+img_rf <- readRDS('data/img_rf.rds')
+img_rf
+```
+
+```{r, fig.height=12, fig.width=8}
+img_purple_rf <- img_purple %>% 
+  slice(img_purple_part$test$idx) %>% 
+  add_predictions(img_rf, 'b_pred')
+
+img_purple_rf %>% 
+  mutate(b_pred = ifelse(b_pred < 0, 0, b_pred)) %>% # small hack!!!
+  mutate(cor_pred = rgb(r, g, b_pred)) %>% 
+  gather(tipo_cor, cor, cor, cor_pred) %>% 
+  img_ggplot() +
+  facet_wrap(~tipo_cor, ncol = 1)
+```
+
+Erro de predição:
+
+```{r}
+img_purple_rf %>% 
+  summarise(erro = sqrt(mean((b - b_pred) ^ 2)))
+```
+
+### Exercício: Outra Imagem
+
+```{r, fig.height=9, fig.width = 4}
+set.seed(47)
+img_xadrez_part <- img_xadrez %>% 
+  resample_partition(c(test = .3, train = .7))
+
+img_xadrez_train <- img_xadrez %>% 
+  slice(img_xadrez_part$train$idx)
+
+img_xadrez_test <- img_xadrez %>% 
+  slice(img_xadrez_part$test$idx)
+
+modelos <- list(lm, tree::tree, mgcv::gam, randomForest::randomForest)
+formulas <- list(b ~ r + g + x + y, 
+                 b ~ r + g + x + y, 
+                 b ~ s(r) + s(g) + s(x) + s(y),
+                 b ~ r + g + x + y)
+
+fits <- tibble(mod = c('lm', 'tree', 'gam', 'rf')) %>% 
+  mutate(fun = modelos, form = formulas) %>% 
+  mutate(fit = map2(fun, form, ~.x(.y, data = img_xadrez_train))) %>% 
+  mutate(preds = map(fit, function(f) {
+    img_xadrez_test %>% 
+      add_predictions(f, 'b_pred') %>% 
+      mutate(b_pred = ifelse(b_pred < 0, 0, b_pred)) %>%
+      mutate(b_pred = ifelse(b_pred > 1, 1, b_pred)) %>% 
+      mutate(cor_pred = rgb(r, g, b_pred)) %>% 
+      gather(tipo_cor, cor, cor, cor_pred)
+  })) %>% 
+  unnest(preds)
+
+fits %>% 
+  img_ggplot() +
+  facet_grid(mod ~ tipo_cor)
+```
+
+```{r}
+fits %>% 
+  group_by(mod) %>% 
+  dplyr::summarise(rmse = sqrt(mean((b - b_pred) ^ 2))) %>% 
+  arrange(rmse)
+```
+
+### Captcha
+
+Se um dado é público, ele deve ser acessível (mesmo sistematicamente). Por isso, sou completamente contra a utilização de captchas para acesso a dados públicos. Mas os captchas existem para não onerar os sistemas das entidades que armazenam esses dados (essa é a única justificativa minimamente aceitável). 
+
+Uma solução para esse problema, muito superior do que usar captchas, é criar uma API de acesso. Isso reduz o volume de transferência de informações e há possibilidade de controle de acesso para não onerar os servidores. Por exemplo, 1000 acessos por cadastro por dia ou 10 acessos por cadastro por minuto.
+
+Na ABJ, para conseguir os dados que queríamos, tivemos de quebrar alguns captchas. Vamos ver brevemente como funciona o captchaTJRS.
+
+Baixar um novo captcha da web.
+
+```{r eval=FALSE}
+# devtools::install_github('platipusc/captchaTJRS')
+library(captchaTJRS)
+arq <- download('captcha.png')
+arq
+```
+
+`ler` e `desenhar`: desenhar no rstudio.
+
+```{r}
+arq <- 'captcha.png'
+library(captchaTJRS)
+arq %>% ler
+arq %>% ler %>% desenhar
+```
+
+`limpar()` faz a limpeza da imagem. Separamos as letras usando uma regra fixa.
+
+```{r}
+arq %>% 
+  ler() %>% 
+  dplyr::mutate(r = g, b = g) %T>% {print(desenhar(.))} %>% 
+  dplyr::mutate(r = 1 - r)    %T>% {print(desenhar(.))} %>% 
+  dplyr::filter(r <= 0.2)     %T>% {print(desenhar(.))} %>% 
+  dplyr::mutate(r = ifelse(r < 1, 0, 1)) %T>% {print(desenhar(.))} %>% 
+  dplyr::mutate(g = r, b = r) %T>% {print(desenhar(.))} %>% 
+  limpar(y = 40, k = 6) %>% 
+  dplyr::mutate(g = r, b = r) %T>% {print(desenhar(.))} %>% 
+  dplyr::filter(y >= 5, y <= 40, 
+                x >= 10, x <= 106) %T>% {print(desenhar(.))} %>% 
+  dplyr::mutate(group = cut(x, c(10, 34, 58, 82, 106), 
+                            labels = c(1, 2, 3, 4)), 
+                group = as.character(group), 
+                group = ifelse(is.na(group), "4", group)) %>% 
+  desenhar() +
+  geom_point(aes(colour = group))
+```
+
+`predizer`: predizendo imagem.
+
+```{r}
+arq %>% predizer()
+```
+
+`classificar`: construção da base de treino
+
+```{r eval=FALSE}
+a <- download()
+classificar(a, path = 'data/')
+```
+
+
+<!--chapter:end:06-model.Rmd-->
+
+# Comunicação
+
+Nas outras aulas pincelamos os elementos de transformação, visualização e modelagem de dados. Para completar nossos trabalhos, precisamos de boas ferramentas de comunicação.
+
+A maior parte dos trabalhos de análise estatística possuem três *outputs* possíveis: i) relatórios analíticos, ii) *dashboards* de visualização e iii) APIs (*Application Programming Interfaces*). Em seguida, vamos discutir brevemente como montar cada um desses *outputs* no R.
+
+## Relatórios
+
+Como já vimos durante as aulas, atualmente a melhor maneira de documentar e relatar análises estatísticas é através do RMarkdown. O formato é aberto e descomplicado, permitindo reprodutibilidade e transformação do documento em diversos formatos possíveis (Word, $\LaTeX$, HTML etc).
+
+Nos textos que seguem, focaremos em relatórios no formato HTML. Atualmente, a web é o melhor espaço para compartilhar e desenvolver análises, sendo também o lugar onde as reais inovações na produção de relatórios ocorrem. Infelizmente, nem todas as empresas e universidades se adaptaram para essa nova era, mas isso é apenas uma questão de tempo.
+
+Para a produção de relatórios customizados, precisamos nos aprofundar um pouco mais em técnicas de formatação. Todas as opções de formatação de um documento RMarkdown estão contidas no YAML (Yet Another Markup Language), que fica usualmente no início do documento.
+
+O YAML de um documento controla os outputs e os parâmetros usados para esses outputs. Por exemplo, o YAML abaixo informa que no momento de compilar o arquivo .Rmd, rodaremos a função `rmarkdown::html_document` com os parâmetros `toc` (*table of contents*) e `toc_float`.
+
+```
+---
+output:
+  html_document:
+    toc: true
+    toc_float: true
+  pdf_document: default
+---
+```
+
+Para obter todas as opções do YAML, veja `?rmarkdown::html_document`. 
+
+- [Neste link](https://github.com/yixuan/prettydoc/) você pode ver alguns formatos interessantes usando RMarkdown. 
+- [Neste link](https://github.com/jimhester/knitrBootstrap), temos formatos em *bootstrap*, uma biblioteca para elaboração de documentos bonitos. 
+- [Neste link](https://github.com/rstudio/rticles) temos alguns formatos apropriados para geração de artigos usando RMarkdown.
+
+## Gráficos dinâmicos
+
+Gráficos dinâmicos, quando bem usados, podem aumentar a experiência do usuário ao analisar um gráfico estatístico. Em seguida, daremos três exemplos que podem ser úteis e que são fáceis de utilizar.
+
+Veremos dois tipos de gráficos dinâmicos. O primeiro é o `plotly`, ferramenta fornecida por uma empresa de mesmo nome que tem o objetivo de unificar a visualização de dados de várias linguagens de programação. O segundo são bibiotecas baseadas no `htmlwidgets`, que por sua vez é um pacote do R que permite a adaptação de ferramentas gráficas programadas em javascript em funções do R.
+
+### Plotly
+
+A biblioteca `plotly` é atualmente a melhor ferramenta para produção de gráficos na web. Aqui, vamos focar em gráficos do tipo `ggplotly`, que são gráficos baseados no `ggplot2`, mas com possibilidade de renderização em HTML.
+
+Primeiro instale a biblioteca:
+
+```{r eval=FALSE}
+install.packages('plotly')
+# versão dev
+# devtools::install_github("ropensci/plotly")
+```
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+library(plotly)
+p <- mtcars %>% 
+  ggplot(aes(x = disp, y = mpg, colour = as.factor(am))) + 
+  geom_point()
+
+ggplotly(p)
+```
+
+Com isso, você pode produzir uma versão dinâmica de praticamente qualquer gráfico do `ggplot2`. Note, no entanto, que a formatação é limitada. Nesse exemplo, temos um dos gráficos dos inscritos usando `ggplot` e `ggplotly`:
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width=9, fig.height=9}
+library(magrittr)
+library(tidyverse)
+library(stringr)
+library(lubridate)
+library(forcats)
+renomear <- function(d) {
+  x <- names(d) %>%
+    tolower %>%
+    abjutils::rm_accent() %>%
+    str_replace_all('[[:space:]/\\-().:]+', '_') %>%
+    str_trim() %>% 
+    str_replace_all('_+', '_') %>% 
+    str_replace_all('_$', '')
+  names(d) <- x
+  d
+}
+
+re_usp <- regex('usp|universidade de são paulo|ime', ignore_case = TRUE)
+re_ufscar <- regex('ufscar|universidade de são carlos', ignore_case = TRUE)
+re_ime <- regex('ime', ignore_case = TRUE)
+re_unip <- regex('unip', ignore_case = TRUE)
+d_alunos <- read_csv('data/lista_anon.csv')
+d_alunos %<>% 
+  mutate(Timestamp = mdy_hms(Timestamp)) %>% 
+  rownames_to_column('id_pessoa') %>% 
+  mutate(cec = id_pessoa %in% as.character(1:45)) %>% 
+  gather(pergunta, resposta, matches('^[0-9]')) %>% 
+  renomear() %>% 
+  spread(pergunta, resposta) %>% 
+  mutate(uni = with(., case_when(
+    str_detect(universidade, re_usp) ~ 'USP',
+    str_detect(universidade, re_ufscar) ~ 'UFSCar',
+    str_detect(universidade, re_unip) ~ 'UNIP',
+    TRUE ~ 'Outra'
+  ))) %>% 
+  mutate(esc = with(., case_when(
+    str_detect(estou_no_a, 'raduado|formado|Mestrado|Pós') ~ 'Formado / Pós',
+    str_detect(estou_no_a, 'Graduação') ~ 'Graduação',
+    TRUE ~ 'Outra'
+  ))) %>% 
+  mutate(ime = str_detect(universidade, re_ime),
+         cec = if_else(cec, 'CEC', 'Jacy'))
+p <- d_alunos %>% 
+  gather(questao, resposta, matches('^[13]')) %>% 
+  replace_na(list(resposta = 'Não.')) %>% 
+  count(cec, questao, resposta) %>% 
+  mutate(prop = n / sum(n)) %>% 
+  mutate(resposta = str_wrap(resposta, 20)) %>% 
+  ggplot(aes(x = resposta, fill = cec, y = prop)) +
+  geom_bar(position = 'dodge', stat = 'identity') +
+  facet_wrap(~questao, scales = 'free_x', ncol = 1) +
+  scale_y_continuous(labels = scales::percent) +
+  geom_text(aes(label = scales::percent(prop), group = cec), 
+            position = position_dodge(.9), vjust = -.2) +
+  theme_bw(14) +
+  theme(strip.background = element_blank()) +
+  xlab('') +
+  ylab('Proporção de inscritos')
+
+p
+```
+
+E aqui...
+
+```{r}
+ggplotly(p, height = 600)
+```
+
+### Html Widgets
+
+Para acessar uma lista (não exaustiva) de pacotes produzidos com o `htmlwidgets`, [veja essa página](http://www.htmlwidgets.org/showcase_leaflet.html). Aqui, vamos focar em três: `dygraphs` para séries temporais, `DT` para tabelas e`leaflet` para mapas
+
+### Dygraphs
+
+[`dygraphs`](https://rstudio.github.io/dygraphs/) é originalmente uma biblioteca em javascript para visualização de séries temporais na web.
+
+```{r}
+# install.packages('dygraphs')
+# devtools::install_github('jtrecenti/falrec')
+library(dygraphs)
+library(falrec)
+
+# d_falrec <- ler_dados()
+# saveRDS(d_falrec, 'data/d_falrec.rds')
+d_falrec <- readRDS('data/d_falrec.rds')
+
+
+ts <- d_falrec %>% 
+  filter(tipo == 'rec_req', data >= as.Date('2005-01-01'), data <= as.Date(today())) %>%
+  spread(porte, valor) %>%
+  select(data, grande:total) %>%
+  mutate(data = ymd(data)) %>% 
+  {xts::xts(select(., -data), .$data)}
+
+dygraph(ts) %>%
+  dyRoller(rollPeriod = 12)
+```
+
+### DT
+
+[`DT`](https://rstudio.github.io/DT/) é originalmente uma biblioteca em javascript para visualização de `tibbles` na web.
+
+```{r}
+# install.packages('DT')
+DT::datatable(mtcars)
+```
+
+```{r}
+DT::datatable(iris, class = 'cell-border stripe')
+```
+
+### Leaflet
+
+[`leaflet`](http://rstudio.github.io/leaflet/) é originalmente uma biblioteca em javascript para produção de mapas
+
+**Exemplo**: IDH dos municípios do Brasil em 2010.
+
+```{r}
+# devtools::install_github('jtrecenti/cea20160329')
+library(cea20160329)
+library(leaflet)
+dados <- as_tibble(pnud)
+lab <- 'Municipio: %s<br/>IDHM-Educação: %f<br/>IDHM-Renda: %f<br/>IDHM-Longevidade: %f'
+dados %>%
+  filter(ano == 2010) %>% 
+  mutate(label = sprintf(lab, municipio, idhm_e, idhm_r, idhm_l)) %>%
+  leaflet() %>%
+  setView(lng = -50, lat = -17, zoom = 4) %>% 
+  addTiles() %>%
+  addMarkers(lng = ~lon, lat = ~lat, popup = ~label,
+             clusterOptions = markerClusterOptions())
+```
+
+**Exemplo**: pacote `sptrans`, desenha a posição dos ônibus em tempo real.
+
+```{r}
+draw_bus2 <- function (.data, map = NULL) {
+  if (is.null(map)) {
+      map <- leaflet::leaflet() %>% leaflet::addTiles()
+  }
+  trips <- unique(.data$trip_id)
+  for (i in seq_along(trips)) {
+      d <- dplyr::filter(.data, trip_id == trips[i])
+      map <- map %>% leaflet::addMarkers(~px, ~py, data = d)
+  }
+  map
+}
+# devtools::install_github('jtrecenti/sptrans')
+library(leaflet)
+library(sptrans)
+trips <- readRDS('data/trips.rds')
+olhovivo_pat <- '233f343e2ad2a3bf483eae00c316cfdd516c3bbbd21b6a3e916645877e137b6f'
+trips %>% 
+  filter(str_detect(trip_id, '477P'), direction_id == 0) %>% 
+  collect_bus(trip_id, 'trip') %>%
+  draw_bus2()
+```
+
+## Shiny
+
+O Shiny é um sistema para desenvolvimento de aplicações web usando o R, um pacote do R (`shiny`) e um servidor web (`shiny server`). O Shiny não é uma página web não é um substituto para sistemas mais gerais, como Ruby on Rails e Django e não é uma ferramenta gerencial, como o Tableau.
+
+Para entender sobre Shiny, é necessário entender primeiro o que é [server side e user side](http://programmers.stackexchange.com/a/171210 "diferencas"). Quando surfamos na web, nos _comunicamos_ com servidores do mundo inteiro, geralmente através do protocolo HTTP.
+
+No server side, processamos requisições e dados do cliente, estrutura e envia páginas web, interage com banco de dados, etc. Linguagens server side comuns são PHP, C#, Java, R etc (virtualmente qualquer linguagem de programação).
+
+No user side, criamos interfaces gráficas a partir dos códigos recebidos pelo servidor, envia e recebe informações do servidor etc. As "linguagens" mais usuais nesse caso são HTML, CSS e JavaScript.
+
+Mas onde está o Shiny nisso tudo? O código de uma aplicação shiny fica no _server side_. O shiny permite que um computador (servidor) envie páginas web, receba informações do usuário e processe dados, utilizando apenas o R. Para rodar aplicativos shiny, geralmente estruturamos a parte relacionada ao HTML, JavaScript e CSS no arquivo `ui.R`, e a parte relacionada com processamento de dados e geração de gráficos e análises no arquivo `server.R`. Os arquivos `ui.R` e `server.R` ficam no servidor! Atualmente é possível construir [aplicativos em um arquivo só](http://shiny.rstudio.com/articles/single-file.html), mas vamos manter a estrutura de `ui.R` e `server.R`.
+
+O pacote `shiny` do R possui internamente um servidor web básico, geralmente utilizado para aplicações locais, permitindo somente uma aplicação por vez. O `shiny server` é um programa que roda somente em Linux que permite o acesso a múltiplas aplicações simultaneamente.
+
+### Começando com um exemplo
+
+```{r eval=FALSE}
+shiny::runGitHub('abjur/vistemplate', subdir='exemplo_01_helloworld',
+                  display.mode = 'showcase')
+```
+
+O Shiny utiliza como padrão o [bootstrap css](http://getbootstrap.com/css/) do [Twitter](https://twitter.com), que é bonito e responsivo (lida bem com várias plataformas, como notebook e mobile). Note que criamos páginas básicas com `pageWithSidebar`. Páginas mais trabalhadas são criadas com `fluidPage`, `fluidRow`, `column`. Pesquise outros tipos de layouts no shiny. É possível criar páginas web customizadas direto no HTML.
+
+Para estudar os *widgets* (entradas de dados para o usuário), acesse [este link](http://shiny.rstudio.com/gallery/widget-gallery.html 'widgets') ou rode
+
+```{r eval=FALSE}
+shiny::runGitHub('garrettgman/shinyWidgets')
+```
+
+### Criando outputs
+
+Imagine que para cada função `xxOutput('foo', ...)` do `ui.R` você pode colocar um código do tipo `output$foo <- renderXX(...)` no `server.R`. A função no arquivo `ui.R` determina a localização e identificação do elemento. Crie gráficos com `plotOutput` e `renderPlot` e exiba dados com `dataTableOutput` e `renderDataTable`.
+
+## Fazendo mais com o shiny
+
+### Shiny Server Pro
+
+- Licença comercial do Shiny-server
+- Possui algumas características a mais, como autenticação e suporte.
+
+### shinyapps.io
+
+- Para compartilhar um aplicativo shiny, geralmente precisamos ter um servidor Linux (geralmente utilizando algum serviço na cloud como AWS ou DigitalOcean) com o shiny server instalado.
+- Isso pode ser doloroso.
+- O shinyapps.io é um sistema (que envolve tanto pacote do R como uma página web) que permite que o usuário coloque sua aplicação shiny na web sem muito esforço.
+- O serviço foi desenvolvido pela RStudio Inc. e possui contas grátis e pagas.
+
+### Flexdashboards
+
+(na outra página)
+
+## APIs com opencpu
+
+```{r eval=FALSE}
+install.packages('opencpu')
+```
+
+APIs são interfaces que permitem a comunicação entre softwares. Atualmente, APIs são essenciais para levar resultados de um lugar para outro. Por exemplo, usando o R podemos criar uma API para enviar a predição de um modelo a partir de um input de usuário, permitindo que essa predição seja utilizada em outros softwares, como sistemas de um banco ou aplicativos de celular.
+
+Vamos montar um exemplo que disponibiliza uma API para quebra de captchas.
+
+```{r eval=FALSE}
+library(opencpu)
+# opencpu$restart()
+
+# no caso é localhost, mas poderia ser um servidor
+u <- opencpu$url()
+path <- '/library/captchaTJRS/R/predizer/print'
+
+# baixa captcha
+# a <- captchaTJRS::download('captcha.jpg')
+'captcha.jpg' %>% captchaTJRS::ler() %>% captchaTJRS::desenhar()
+
+# poderia ser chamado de qualquer dispositivo
+comando <- sprintf('curl %s%s -F "a=@captcha.jpg"', u, path)
+system(comando, ignore.stderr = TRUE)
+```
+
+
+<!--chapter:end:07-comunicacao.Rmd-->
+
+# Exemplo flexdashboard
+
+```{r}
+library(tidyverse)
+library(dygraphs)
+library(cea20160329)
+library(leaflet)
+library(falrec)
+library(lubridate)
+library(ggplot2)
+library(plotly)
+```
+
+```
+Column {data-width=600}
+-------------------------------------
+```
+
+### Compreendendo as flores
+    
+```{r}
+p <- iris %>% 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) + 
+  geom_point() +
+  guides(colour = FALSE) +
+  facet_wrap(~Species, ncol = 2) +
+  theme_bw()
+ggplotly(p)
+```
+    
+```
+Column {data-width=400}
+-------------------------------------
+```
+
+### PNUD - IDH municipal
+
+```{r}
+# devtools::install_github('jtrecenti/cea20160329')
+
+dados <- pnud
+lab <- 'Municipio: %s<br/>IDHM-Educação: %f<br/>IDHM-Renda: %f<br/>IDHM-Longevidade: %f'
+dados %>%
+  as_tibble() %>% 
+  filter(ano == 2010) %>% 
+  mutate(label = sprintf(lab, municipio, idhm_e, idhm_r, idhm_l)) %>%
+  leaflet() %>%
+  setView(lng = -50, lat = -17, zoom = 4) %>% 
+  addTiles() %>%
+  addMarkers(lng = ~lon, lat = ~lat, popup = ~label,
+             clusterOptions = markerClusterOptions())
+
+```
+
+### Milhas por galão
+
+```{r}
+# install.packages('DT')
+DT::datatable(mtcars)
+```
+
+
+<!--chapter:end:08-flex.Rmd-->
+
